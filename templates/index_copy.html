@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个性化视频推荐系统</title>
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrapTable/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/AdminLTE.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/skins/_all-skins.min.css">
+</head>
+<body class="layout-top-nav">
+<div>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">个性化视频推荐系统</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">推荐</a></li>
+                    <li><a href="#">喜剧片</a></li>
+                    <li><a href="#">恐怖片</a></li>
+                    <li><a href="#">动作片</a></li>
+                    <li><a href="#">科幻片</a></li>
+                    <li><a href="#">冒险片</a></li>
+                    <li><a href="#">推理剧</a></li>
+                    <li><a href="#">动画片</a></li>
+                    <li><a href="#">浪漫</a></li>
+                    <li><a href="#">战争</a></li>
+                   {% comment %} <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>
+                    <li><a href="#">SVN</a></li>{% endcomment %}
+                </ul>
+            </div>
+            <div>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="名称、演员">
+                     </div>
+                    <button type="submit" class="btn btn-default">查找</button>
+                </form>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row" align="center" style="margin-left: 30px">
+        <div class="panel panel-primary col-sm-2" style="margin: 15px;">
+            <div class="panel-heading">
+                <h3 class="panel-title" >Action</h3>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-warning btn-xs">推荐</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table id="dzp" class="table">
+                    <tr>
+                        <td><a>Toy Story (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Jumanji (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Grumpier Old Men (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Waiting to Exhale (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Father of the Bride Part II (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Heat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sabrina (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Tom and Huck (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sudden Death (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>GoldenEye (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Adventure</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>American President, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dracula: Dead and Loving It (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Balto (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Nixon (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cutthroat Island (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Casino (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sense and Sensibility (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Four Rooms (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Ace Ventura: When Nature Calls (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Money Train (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Animation</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Get Shorty (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Copycat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Assassins (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Powder (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Leaving Las Vegas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Othello (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Now and Then (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Persuasion (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>City of Lost Children, The (Cit茅 des enfants perdus, La) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Children's</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dangerous Minds (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Twelve Monkeys (a.k.a. 12 Monkeys) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Babe (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Carrington (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dead Man Walking (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Across the Sea of Time (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>It Takes Two (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Clueless (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cry, the Beloved Country (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Richard III (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Comedy</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dead Presidents (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Restoration (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mortal Kombat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>To Die For (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>How to Make an American Quilt (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Seven (a.k.a. Se7en) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Pocahontas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>When Night Is Falling (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Usual Suspects, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mighty Aphrodite (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% comment %}第二行{% endcomment %}
+    <div class="row" align="center" style="margin-left: 30px">
+        <div class="panel panel-primary col-sm-2" style="margin: 15px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Crime</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Toy Story (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Jumanji (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Grumpier Old Men (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Waiting to Exhale (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Father of the Bride Part II (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Heat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sabrina (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Tom and Huck (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sudden Death (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>GoldenEye (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Documentary</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>American President, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dracula: Dead and Loving It (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Balto (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Nixon (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cutthroat Island (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Casino (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sense and Sensibility (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Four Rooms (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Ace Ventura: When Nature Calls (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Money Train (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Drama</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Get Shorty (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Copycat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Assassins (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Powder (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Leaving Las Vegas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Othello (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Now and Then (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Persuasion (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>City of Lost Children, The (Cit茅 des enfants perdus, La) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Fantasy</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dangerous Minds (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Twelve Monkeys (a.k.a. 12 Monkeys) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Babe (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Carrington (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dead Man Walking (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Across the Sea of Time (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>It Takes Two (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Clueless (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cry, the Beloved Country (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Richard III (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Film-Noir</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dead Presidents (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Restoration (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mortal Kombat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>To Die For (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>How to Make an American Quilt (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Seven (a.k.a. Se7en) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Pocahontas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>When Night Is Falling (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Usual Suspects, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mighty Aphrodite (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% comment %}第三行{% endcomment %}
+    <div class="row" align="center" style="margin-left: 30px">
+        <div class="panel panel-primary col-sm-2" style="margin: 15px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Horror</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Toy Story (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Jumanji (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Grumpier Old Men (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Waiting to Exhale (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Father of the Bride Part II (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Heat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sabrina (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Tom and Huck (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sudden Death (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>GoldenEye (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Musical</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>American President, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dracula: Dead and Loving It (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Balto (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Nixon (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cutthroat Island (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Casino (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sense and Sensibility (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Four Rooms (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Ace Ventura: When Nature Calls (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Money Train (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Mystery</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Get Shorty (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Copycat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Assassins (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Powder (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Leaving Las Vegas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Othello (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Now and Then (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Persuasion (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>City of Lost Children, The (Cit茅 des enfants perdus, La) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Romance</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dangerous Minds (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Twelve Monkeys (a.k.a. 12 Monkeys) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Babe (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Carrington (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dead Man Walking (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Across the Sea of Time (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>It Takes Two (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Clueless (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cry, the Beloved Country (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Richard III (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sci-Fi</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Dead Presidents (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Restoration (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mortal Kombat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>To Die For (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>How to Make an American Quilt (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Seven (a.k.a. Se7en) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Pocahontas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>When Night Is Falling (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Usual Suspects, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Mighty Aphrodite (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% comment %}第四行{% endcomment %}
+    <div class="row" align="center" style="margin-left: 30px">
+        <div class="panel panel-primary col-sm-2" style="margin: 15px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Thriller</h3>
+            </div>
+            <div class="panel-body">
+                <table  class="table">
+                    <tr>
+                        <td><a>Toy Story (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Jumanji (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Grumpier Old Men (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Waiting to Exhale (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Father of the Bride Part II (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Heat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sabrina (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Tom and Huck (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sudden Death (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>GoldenEye (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">War</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>American President, The (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Dracula: Dead and Loving It (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Balto (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Nixon (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Cutthroat Island (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Casino (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Sense and Sensibility (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Four Rooms (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Ace Ventura: When Nature Calls (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Money Train (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary col-sm-2" style="margin: 15px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Western</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td><a>Get Shorty (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Copycat (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Assassins (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Powder (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Leaving Las Vegas (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Othello (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Now and Then (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Persuasion (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>City of Lost Children, The (Cit茅 des enfants perdus, La) (1995)</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/static/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            url:"../user/type",
+            method:'post',
+            success:function(msg){
+                var msg = JSON.parse(msg);
+                if(msg.code=='0000'){
+                     $("#dzp").html("");
+                     msg.data=JSON.parse(msg.data);
+                     for(var i=0;i<msg.data.length;i++){
+                         var tr=$('<tr></tr>');
+                         var td=$('<td></td>');
+                         var a=$('<a></a>');
+                         a.append(msg.data[i]['fields']['title']);
+                         td.append(a);
+                         tr.append(td);
+                         $("#dzp").append(tr);
+                     }
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

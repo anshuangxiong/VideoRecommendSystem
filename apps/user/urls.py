@@ -18,4 +18,5 @@ from user import views
 
 urlpatterns = [
     url(r'^index$', views.index, name='index'),  #
+    url(r'^type', views.type, name='type'),  #
 ]

@@ -28,7 +28,7 @@
                 <h3 class="panel-title">动作片</h3>
             </div>
             <div class="panel-body">
-                <table>
+                <table id="dzp">
                     <tr>
                         <td><a>Toy Story (1995)</a></td>
                     </tr>
@@ -65,7 +65,7 @@
 
         <div class="panel panel-primary col-sm-2" style="margin: 15px">
             <div class="panel-heading">
-                <h3 class="panel-title">动作片</h3>
+                <h3 class="panel-title">科幻片</h3>
             </div>
             <div class="panel-body">
                 <table>
@@ -227,7 +227,28 @@
 <script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
 <script>
-
+    $(function(){
+        $.ajax({
+            url:"../user/type",
+            method:'post',
+            success:function(msg){
+                var msg = JSON.parse(msg);
+                if(msg.code=='0000'){
+                     $("#dzp").html("");
+                     msg.data=JSON.parse(msg.data);
+                     for(var i=0;i<msg.data.length;i++){
+                         var tr=$('<tr></tr>');
+                         var td=$('<td></td>');
+                         var a=$('<a></a>');
+                         a.append(msg.data[i]['fields']['title']);
+                         td.append(a);
+                         tr.append(td);
+                         $("#dzp").append(tr);
+                     }
+                }
+            }
+        });
+    });
 
 </script>
 </body>

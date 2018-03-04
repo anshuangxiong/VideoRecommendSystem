@@ -285,11 +285,27 @@
                     if(msg.code=='0000') {
                         $("#user_info").html('');
                         var li=$('<li></li>');
-                        var a=$('<a></a>');
-                        a.text("用户："+msg.data['username']);
-                        li.append(a);
-                        $("#user_info").html(li);
+                        li.append("<a>用户："+msg.data['username']+"</a>");
+                        var li2=$('<li></li>');
+                        li2.append("<a id='logout'>退出</a>");
+                        $("#user_info").append(li);
+                        $("#user_info").append(li2);
                         $('#loginModal').modal('hide');
+                        $("#logout").click(function(){
+                            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
+                                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
+                                '');
+                            $.ajax({
+                                url:'../user/logout',
+                                type:'post',
+                                success:function(msg){
+                                    var msg = JSON.parse(msg);
+                                    if(msg.code=='0000'){
+                                        alert(msg.info);
+                                    }
+                                }
+                            });
+                        });
                     }else{
                         console.log(msg.info);
                         $(".user_error").text("输入错误");
@@ -300,6 +316,8 @@
                 }
             });
         });
+
+
 
         $.ajax({
             url:"../user/type",

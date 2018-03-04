@@ -59,3 +59,11 @@ def user_login(request):
     else:
         json_data = json.dumps({'code': '0001', 'info': '登录失败', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
+
+
+@csrf_exempt
+def user_logout(request):
+    del request.session["username"]
+    json_data = json.dumps({'code': '0000', 'info': '退出成功', 'data': ''})
+    return JsonResponse(json_data, safe=False, content_type='application/json')
+

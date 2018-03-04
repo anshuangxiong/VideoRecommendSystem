@@ -10,6 +10,28 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class Movies(models.Model):
+    movie_id = models.FloatField(primary_key=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    year = models.FloatField(blank=True, null=True)
+    genres = models.CharField(max_length=255, blank=True, null=True)
+    genres_en = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'movies'
+
+
+class Links(models.Model):
+    movie_id = models.FloatField(primary_key=True)
+    imbd_id = models.FloatField(blank=True, null=True)
+    tmdb_id = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'links'
+
+
 class Ratings(models.Model):
     user_id = models.FloatField(primary_key=True)
     movie_id = models.FloatField()
@@ -18,20 +40,8 @@ class Ratings(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'RATINGS'
+        db_table = 'ratings'
         unique_together = (('user_id', 'movie_id'),)
-
-
-class Movies(models.Model):
-    movie_id = models.FloatField(primary_key=True)
-    title = models.CharField(max_length=255, blank=True, null=True)
-    genres = models.CharField(max_length=255, blank=True, null=True)
-    year = models.CharField(max_length=5, blank=True, null=True)
-    genres_en = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'MOVIES'
 
 
 class Tags(models.Model):
@@ -42,14 +52,16 @@ class Tags(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'TAGS'
+        db_table = 'tags'
 
 
-class Links(models.Model):
-    movie_id = models.FloatField(primary_key=True)
-    imdb_id = models.FloatField(blank=True, null=True)
-    tmdb_id = models.FloatField(blank=True, null=True)
+class Sysusers(models.Model):
+    user_id = models.FloatField(primary_key=True)
+    user_name = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    hobby = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'LINKS'
+        db_table = 'sysusers'

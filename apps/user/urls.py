@@ -19,4 +19,5 @@ app_name='[user]'
 urlpatterns = [
     url(r'^type', views.type, name='type'),
     url(r'^list', views.movie_list_by_type, name='list'),
+    url(r'^login', views.user_login, name='login'),
 ]

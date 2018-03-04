@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from user.models import Movies
 from django.http import JsonResponse
@@ -28,9 +29,16 @@ def type(request):
 @csrf_exempt
 def movie_list_by_type(request):
     movie_type = request.POST['movie_type']
-    print(movie_type)
     movies = Movies.objects.filter(genres__contains=movie_type).distinct()
-    print(len(movies))
-    movies = serializers.serialize("json", movies)
+    paginator = Paginator(movies, 10)  # Show 10 contacts per page
+    page = request.POST.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    print(len(contacts))
+    movies = serializers.serialize("json", contacts)
     json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
     return JsonResponse(json_data,  safe=False, content_type='application/json')

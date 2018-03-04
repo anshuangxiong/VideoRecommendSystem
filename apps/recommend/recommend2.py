@@ -85,7 +85,7 @@ def recommend(user2item_matrix, user_id, W, K=10):
 
 
 if __name__ == "__main__":
-    data_path = "data/ratings2.csv"
+    data_path = "data/ratings.csv"
     sep = ","
     user2item_matrix, item2user_matrix = read_data(data_path, sep)
     W = user_sim_cosine(user2item_matrix)

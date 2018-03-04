@@ -7,6 +7,47 @@
     <link rel="stylesheet" type="text/css" href="/static/js/bootstrapTable/bootstrap-table.min.css">
     <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/skins/_all-skins.min.css">
+    <style>
+        /* 登录页 */
+
+.login_title h1{font-size:24px;height:60px;line-height:60px;color:#a8a8a8;float:left;font-weight:bold;margin-left:44px;}
+.login_title a{width:100px;height:20px;display:block;font-size:16px;color:#5fb42a;text-indent:26px;background:url(/static/img/icons02.png) left 5px no-repeat;float:left;margin:20px 0 0 36px}
+
+.form_input{width:308px;height:250px;margin:20px auto;position:relative;}
+.name_input,.pass_input{width:306px;height:36px;border:1px solid #e0e0e0;background:url(/static/img/icons02.png) 280px -41px no-repeat #f8f8f8;outline:none;font-size:14px;text-indent:10px;position: absolute;left:0;top:0}
+.pass_input{top:65px;background-position:280px -95px;}
+
+.user_error,.pwd_error{color:#f00;position:absolute;left:0;top:43px;display:none}
+
+.pwd_error{top:110px;}
+
+.more_input{position:absolute;left:0;top:130px;width:100%}
+
+.more_input input{float:left;margin-top:2px;}
+.more_input label{float:left;margin-left:10px;}
+.more_input a{float:right;color:#666}
+.more_input a:hover{color:#ff8800}
+
+.input_submit{width:100%;height:40px;position:absolute;left:0;top:180px;background-color:#47aa34;color:#fff;font-size:22px;border:0px;font-family:'Microsoft Yahei';cursor:pointer;}
+
+
+/* 注册页面 */
+
+.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
+.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}
+
+.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
+.reg_form li{height:70px;list-style-type:none}
+.reg_form li label{width:70px;height:40px;line-height:40px;float:left;font-size:14px;color:#a8a8a8}
+.reg_form li input{width:288px;height:38px;border:1px solid #e0e0e0;float:left;outline:none;text-indent:10px;background-color:#f8f8f8}
+.reg_form li.agreement input{width:15px;height:15px;float:left;margin-top:13px}
+.reg_form li.agreement label{width:300px;float:left;margin-left:10px;}
+.reg_form li.reg_sub input{width:360px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
+.reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
+
+
+
+    </style>
 </head>
 <body class="layout-top-nav">
 <div>
@@ -38,8 +79,8 @@
                 </form>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                <li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
             </ul>
         </div>
     </nav>
@@ -71,15 +112,96 @@
             </div>
         </div>
     </div>
+
 </div>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title login_title" id="loginModalLabel">用户登录</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form_input">
+					<form>
+						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+						<div class="user_error">输入错误</div>
+						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+						<div class="pwd_error">输入错误</div>
+						<div class="more_input clearfix">
+							<input type="checkbox" name="">
+							<label>记住用户名</label>
+							<a href="#">忘记密码</a>
+						</div>
+						<input type="submit" name="" value="登录" class="input_submit">
+					</form>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- 注册模态框（Modal） -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="registerModalLabel">立即注册</h4>
+            </div>
+            <div class="modal-body">
+                <div class="reg_form clearfix">
+                    <form>
+                        <ul>
+                            <li>
+                                <input type="text" name="user_name" id="user_name" placeholder="请输入用户名">
+                                <span class="error_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="password" name="pwd" id="pwd" placeholder="请输入密码">
+                                <span class="error_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="password" name="cpwd" id="cpwd" placeholder="请确认密码">
+                                <span class="error_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="text" name="email" id="email" placeholder="请输入电子邮箱">
+                                <span class="error_tip">提示信息</span>
+                            </li>
+                            <li class="reg_sub">
+                                <input type="submit" value="注 册" name="">
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {% comment %}<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交更改</button>{% endcomment %}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <script type="text/javascript" src="/static/js/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
 <script>
+    var page=1;
+    var current_movie_type="";
     $(function(){
+        //给视频分类注册点击事件
         $("#comedy,#horror,#action,#thriller,#adventure,#mystery,#children,#romance,#war").click(function(e){
+            current_movie_type=$(e.target).attr('movie_type');
+            page=1;
             //点击非推荐时button的文本显示为更多
             $("#recommend_button").text("更多");
             //console.log($(e.target).attr('movie_type'));
@@ -92,31 +214,14 @@
             //表格的表头为点击的标题
             $(".panel-title").text($(e.target).attr('movie_type'));
             //请求数据
-            $.ajax({
-                url:"../user/list",
-                data:{
-                    'movie_type':$(e.target).attr('movie_type')
-                },
-                method:'post',
-                success:function(msg){
-                    var msg = JSON.parse(msg);
-                    if(msg.code=='0000'){
-                        $("#movie_list").html("");
-                        msg.data=JSON.parse(msg.data);
-                        for(var i=0;i<msg.data.length;i++){
-                            var tr=$('<tr></tr>');
-                            var td=$('<td></td>');
-                            var a=$('<a></a>');
-                            a.append(msg.data[i]['fields']['title']);
-                            td.append(a);
-                            tr.append(td);
-                            $("#movie_list").append(tr);
-                        }
-                    }
-                }
-            });
+            get_movie_list();
         });
 
+        //给更多按钮注册点击事件
+        $("#recommend_button").click(function(e){
+            page=page+1;
+            get_movie_list();
+        });
         $("#recommend").click(function(e){
             $("#recommend_button").text("推荐");
             $("#nav_ul").find('li').each(function(){
@@ -147,6 +252,11 @@
             });
         });
 
+
+
+        $('#loginModal').modal('hide');
+        $('#registerModal').modal('hide');
+
         $.ajax({
             url:"../user/type",
             method:'post',
@@ -169,6 +279,33 @@
         });
     });
 
+
+    function get_movie_list() {
+        $.ajax({
+            url: "../user/list",
+            data: {
+                'movie_type': current_movie_type,
+                'page':page,
+            },
+            method: 'post',
+            success: function (msg) {
+                var msg = JSON.parse(msg);
+                if (msg.code == '0000') {
+                    $("#movie_list").html("");
+                    msg.data = JSON.parse(msg.data);
+                    for (var i = 0; i < msg.data.length; i++) {
+                        var tr = $('<tr></tr>');
+                        var td = $('<td></td>');
+                        var a = $('<a></a>');
+                        a.append(msg.data[i]['fields']['title']);
+                        td.append(a);
+                        tr.append(td);
+                        $("#movie_list").append(tr);
+                    }
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

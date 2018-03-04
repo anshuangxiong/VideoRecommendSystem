@@ -50,10 +50,14 @@ def user_login(request):
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
     users=Sysusers.objects.filter(user_name=username,password=pwd)
+    # 先序列化
+    users = serializers.serialize('json', users)
+    # 转换为字典类型
+    users = json.loads(users)
     if len(users)>0:
         # 登录成功放入session
-        request.session["username"] = username
-        login_data = {'username': username}
+        request.session["user"] = users[0]
+        login_data = {'username': users[0]['fields']['user_name']}
         json_data = json.dumps({'code': '0000', 'info': '登录成功', 'data': login_data})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     else:
@@ -63,7 +67,7 @@ def user_login(request):
 
 @csrf_exempt
 def user_logout(request):
-    del request.session["username"]
+    del request.session["user"]
     json_data = json.dumps({'code': '0000', 'info': '退出成功', 'data': ''})
     return JsonResponse(json_data, safe=False, content_type='application/json')
 

@@ -13,12 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
-from django.contrib import admin
-from user import views
+from django.conf.urls import url
+from recommend import views
+app_name = '[recommend]'
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^user/', include('user.urls', namespace='user')),  # 用户模块
-    url(r'^recommend/', include('recommend.urls', namespace='recommend')),  # 推荐模块
-    url(r'^$', views.index, name='index'),  # 首页
+    url(r'^score', views.recommend_best_score, name='score'),
+
 ]

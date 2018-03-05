@@ -61,6 +61,7 @@ def user_login(request):
     if len(users)>0:
         # 登录成功放入session
         request.session["user"] = users[0]
+        request.session["username"] = users[0]['fields']['user_name']
         login_data = {'username': users[0]['fields']['user_name']}
         json_data = json.dumps({'code': '0000', 'info': '登录成功', 'data': login_data})
         return JsonResponse(json_data, safe=False, content_type='application/json')
@@ -71,7 +72,8 @@ def user_login(request):
 
 @csrf_exempt
 def user_logout(request):
-    del request.session["user"]
+    del(request.session["user"])
+    del(request.session["username"])
     json_data = json.dumps({'code': '0000', 'info': '退出成功', 'data': ''})
     return JsonResponse(json_data, safe=False, content_type='application/json')
 

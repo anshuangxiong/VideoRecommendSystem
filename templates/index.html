@@ -34,7 +34,7 @@
 /* 注册页面 */
 
 .reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
-.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}
+.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(/static/img/icons02.png) 35px 3px no-repeat;margin-top:15px}
 
 .reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
 .reg_form li{height:70px;list-style-type:none}
@@ -79,8 +79,13 @@
                 </form>
             </div>
             <ul class="nav navbar-nav navbar-right" id="user_info">
-                <li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                <li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                {% if request.session.username %}
+                    <li><a>用户：{{  request.session.username }}</a></li>
+                    <li><a id='logout'>退出</a></li>
+                {% else %}
+                    <li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                    <li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -131,12 +136,11 @@
 						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
-							<input type="checkbox" name="">
-							<label>记住用户名</label>
+							{% comment %}<input type="checkbox" name="">
+							<label>记住用户名</label>{% endcomment %}
 							<a href="#">忘记密码</a>
 						</div>
 						<input type="button" id="sub_login" name="" value="登 录" class="input_submit">
-                       {% comment %} <button type="button" class="btn btn-primary" id="login_button">登录</button>{% endcomment %}
 					</form>
 				</div>
             </div>
@@ -184,8 +188,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                {% comment %}<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">提交更改</button>{% endcomment %}
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -201,6 +203,7 @@
     var current_movie_type="";
     var find_text="";
     $(function(){
+        recommend_movies(page);
         //给视频分类注册点击事件
         $("#comedy,#horror,#action,#thriller,#adventure,#mystery,#children,#romance,#war").click(function(e){
             find_text='';
@@ -224,7 +227,12 @@
         //给更多按钮注册点击事件
         $("#recommend_button").click(function(e){
             page=page+1;
-            get_movie_list(find_text);
+            if($(this).text()!="推荐"){
+                get_movie_list(find_text);
+            }else{
+                recommend_movies(page);
+            }
+
         });
 
         $("#recommend").click(function(e){
@@ -235,26 +243,7 @@
             $(e.target).parents('li').attr('class','active');
             $(".panel-title").text("Recommend");
 
-            $.ajax({
-                url:"../user/type",
-                method:'post',
-                success:function(msg){
-                    var msg = JSON.parse(msg);
-                    if(msg.code=='0000'){
-                        $("#movie_list").html("");
-                        msg.data=JSON.parse(msg.data);
-                        for(var i=0;i<msg.data.length;i++){
-                            var tr=$('<tr></tr>');
-                            var td=$('<td></td>');
-                            var a=$('<a></a>');
-                            a.append(msg.data[i]['fields']['title']);
-                            td.append(a);
-                            tr.append(td);
-                            $("#movie_list").append(tr);
-                        }
-                    }
-                }
-            });
+            recommend_movies(page);
         });
 
         $('#loginModal').modal('hide');
@@ -399,25 +388,23 @@
                 get_movie_list(find_text);
             }
         });
-        $.ajax({
-            url:"../user/type",
-            method:'post',
-            success:function(msg){
-                var msg = JSON.parse(msg);
-                if(msg.code=='0000'){
-                     $("#movie_list").html("");
-                     msg.data=JSON.parse(msg.data);
-                     for(var i=0;i<msg.data.length;i++){
-                         var tr=$('<tr></tr>');
-                         var td=$('<td></td>');
-                         var a=$('<a></a>');
-                         a.append(msg.data[i]['fields']['title']);
-                         td.append(a);
-                         tr.append(td);
-                         $("#movie_list").append(tr);
-                     }
+
+
+
+        $("#logout").click(function () {
+            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
+                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
+                '');
+            $.ajax({
+                url: '../user/logout',
+                type: 'post',
+                success: function (msg) {
+                    var msg = JSON.parse(msg);
+                    if (msg.code == '0000') {
+                        console.log(msg.info);
+                    }
                 }
-            }
+            });
         });
     });
 
@@ -457,6 +444,32 @@
         else {
             return false;
         }
+    }
+
+    function recommend_movies(page){
+        $.ajax({
+            url:"../recommend/score",
+            method:'post',
+            data:{
+                'page':page
+            },
+            success:function(msg){
+                var msg = JSON.parse(msg);
+                if(msg.code=='0000'){
+                     $("#movie_list").html("");
+                     msg.data=JSON.parse(msg.data);
+                     for(var i=0;i<msg.data.length;i++){
+                         var tr=$('<tr></tr>');
+                         var td=$('<td></td>');
+                         var a=$('<a></a>');
+                         a.append(msg.data[i]['fields']['title']);
+                         td.append(a);
+                         tr.append(td);
+                         $("#movie_list").append(tr);
+                     }
+                }
+            }
+        });
     }
 </script>
 </body>

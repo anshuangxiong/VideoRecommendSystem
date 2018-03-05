@@ -73,9 +73,9 @@
             <div>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="名称、演员">
+                        <input type="text" class="form-control" id="find_text" placeholder="名称、演员">
                      </div>
-                    <button type="submit" class="btn btn-default">查找</button>
+                    <button type="button" class="btn btn-default" id="find_button">查找</button>
                 </form>
             </div>
             <ul class="nav navbar-nav navbar-right" id="user_info">
@@ -199,9 +199,11 @@
 <script>
     var page=1;
     var current_movie_type="";
+    var find_text="";
     $(function(){
         //给视频分类注册点击事件
         $("#comedy,#horror,#action,#thriller,#adventure,#mystery,#children,#romance,#war").click(function(e){
+            find_text='';
             current_movie_type=$(e.target).attr('movie_type');
             page=1;
             //点击非推荐时button的文本显示为更多
@@ -216,13 +218,13 @@
             //表格的表头为点击的标题
             $(".panel-title").text($(e.target).attr('movie_type'));
             //请求数据
-            get_movie_list();
+            get_movie_list('');
         });
 
         //给更多按钮注册点击事件
         $("#recommend_button").click(function(e){
             page=page+1;
-            get_movie_list();
+            get_movie_list(find_text);
         });
 
         $("#recommend").click(function(e){
@@ -380,6 +382,23 @@
             });
         });
 
+        //点击查找按钮
+        $("#find_button").click(function(){
+            current_movie_type='';
+            page=1;
+            find_text = $("#find_text").val().trim();
+
+            if(find_text==''){
+                return;
+            }else{
+                $("#recommend_button").text("更多");
+                $("#nav_ul").find('li').each(function(){
+                    $(this).attr('class','');
+                });
+                $(".panel-title").text(find_text);
+                get_movie_list(find_text);
+            }
+        });
         $.ajax({
             url:"../user/type",
             method:'post',
@@ -403,12 +422,13 @@
     });
 
 
-    function get_movie_list() {
+    function get_movie_list(findtext) {
         $.ajax({
             url: "../user/list",
             data: {
                 'movie_type': current_movie_type,
                 'page':page,
+                'findtext':findtext,
             },
             method: 'post',
             success: function (msg) {
@@ -435,7 +455,6 @@
         if (filter.test(mail))
             return true;
         else {
-            //alert('您的电子邮件格式不正确');
             return false;
         }
     }

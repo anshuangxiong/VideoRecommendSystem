@@ -31,7 +31,11 @@ def type(request):
 @csrf_exempt
 def movie_list_by_type(request):
     movie_type = request.POST['movie_type']
-    movies = Movies.objects.filter(genres__contains=movie_type).distinct()
+    find_text = request.POST.get('findtext')
+    if find_text != '':
+        movies = Movies.objects.filter(title__contains=find_text).distinct()
+    else:
+        movies = Movies.objects.filter(genres__contains=movie_type).distinct()
     paginator = Paginator(movies, 10)  # Show 10 contacts per page
     page = request.POST.get('page')
     try:

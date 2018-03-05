@@ -5,6 +5,7 @@ from user.models import Movies
 from django.http import JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
+from django.db import connection
 import json
 
 # Create your views here.
@@ -39,7 +40,6 @@ def movie_list_by_type(request):
         contacts = paginator.page(1)
     except EmptyPage:
         contacts = paginator.page(paginator.num_pages)
-    print(len(contacts))
     movies = serializers.serialize("json", contacts)
     json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
     return JsonResponse(json_data,  safe=False, content_type='application/json')
@@ -70,4 +70,27 @@ def user_logout(request):
     del request.session["user"]
     json_data = json.dumps({'code': '0000', 'info': '退出成功', 'data': ''})
     return JsonResponse(json_data, safe=False, content_type='application/json')
+
+
+@csrf_exempt
+def user_register(request):
+    username = request.POST.get('username')
+    pwd = request.POST.get('pwd')
+    email = request.POST.get('email')
+    if username == '' or pwd == '' or email == '':
+        json_data = json.dumps({'code': '0002', 'info': '参数不能为空', 'data': ''})
+        return JsonResponse(json_data, safe=False, content_type='application/json')
+    users = Sysusers.objects.filter(user_name=username)
+    if len(users) > 0:
+        json_data = json.dumps({'code': '0001', 'info': '对不起用户名已存在', 'data': ''})
+        return JsonResponse(json_data, safe=False, content_type='application/json')
+    with connection.cursor() as cursor:
+        cursor.execute("select VIDEO_USER_SEQ.nextval from dual")
+        row = cursor.fetchone()
+    Sysusers.objects.create(user_id=int(row[0]),user_name=str(username),password=str(pwd),email=email)
+    register_data = {'username': username}
+    json_data = json.dumps({'code': '0000', 'info': '注册成功', 'data': register_data})
+    return JsonResponse(json_data, safe=False, content_type='application/json')
+
+
 

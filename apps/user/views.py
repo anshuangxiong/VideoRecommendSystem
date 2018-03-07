@@ -7,9 +7,9 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 import json
-
+import logging
 # Create your views here.
-
+logger = logging.getLogger(__name__)
 
 def index(request):
     '''
@@ -31,6 +31,7 @@ def type(request):
 @csrf_exempt
 def movie_list_by_type(request):
     movie_type = request.POST['movie_type']
+    logger.info('movie_type:'+movie_type)
     find_text = request.POST.get('findtext')
     if find_text != '':
         movies = Movies.objects.filter(title__contains=find_text).distinct()
@@ -53,6 +54,7 @@ def movie_list_by_type(request):
 def user_login(request):
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
+
     users=Sysusers.objects.filter(user_name=username,password=pwd)
     # 先序列化
     users = serializers.serialize('json', users)

@@ -98,12 +98,18 @@ def recommend_ItemCF(user2item_matrix, user_id, W, K=10):
 
 if __name__ == "__main__":
 
-    data_path = "data/ratings.csv"
+    data_path = "../../data/ratings.csv"
     sep = ","
     user2item_matrix, item2user_matrix = read_data(data_path, sep)
-    W = item_sim_cosine(item2user_matrix)
+    W =  user_sim_cosine(user2item_matrix)
     print(W)
     userId = input("请输入推荐的用户: ")
     recommendNum = input("请输入给用户"+userId+"推荐的数量: ")
     rank_list = recommend_userCF(user2item_matrix, str(userId), W, int(recommendNum))
     print(rank_list)
+    #print(rank_list[0])
+    #print(rank_list[0][0])
+    movie_ids = []
+    for i in range(len(rank_list)):
+        movie_ids.append(rank_list[i][0])
+    print(movie_ids)

@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/js/bootstrapTable/bootstrap-table.min.css">
     <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/hivideo/hivideo.css" />
     <style>
         /* 登录页 */
 
@@ -45,7 +46,16 @@
 .reg_form li.reg_sub input{width:360px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
 .reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
 
+/*视频播放器*/
+.main-wrap {
+    margin: 0 auto;
+    {% comment %}min-width: 320px;
+    max-width: 640px;{% endcomment %}
+}
 
+.main-wrap video {
+    width: 100%;
+}
 
     </style>
 </head>
@@ -104,7 +114,7 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div id="" class="box box-primary box-solid">
                 <div class="box-header with-border">
                     <h5 class="box-title">
@@ -112,7 +122,15 @@
                     </h5>
                 </div>
                 <div class="box-body">
-                    <img src="static/img/d62a6059252dd42a1835151d023b5bb5c9eab843.jpg">
+                   {% comment %} <img src="static/img/d62a6059252dd42a1835151d023b5bb5c9eab843.jpg">{% endcomment %}
+                    <div>
+
+                    </div>
+                    <div class="main-wrap">
+                        <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+                            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4" type="video/mp4">
+                        </video>
+                    </div>
                 </div>
             </div>
         </div>
@@ -198,6 +216,7 @@
 <script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="/static/js/layer/layer.js"></script>
+<script type="text/javascript" src="/static/js/hivideo.js"></script>
 <script>
     var page=1;
     var current_movie_type="";
@@ -428,6 +447,12 @@
                         var td = $('<td></td>');
                         var a = $('<a></a>');
                         a.append(msg.data[i]['fields']['title']);
+                        a.attr("movie_id",msg.data[i]['pk']);
+                         a.click(function(){
+                             var movie_id = $(this).attr("movie_id");
+                             console.log(movie_id);
+                             $("#video_src").attr("src","https://movielens.org/movies/1");
+                         });
                         td.append(a);
                         tr.append(td);
                         $("#movie_list").append(tr);
@@ -463,6 +488,12 @@
                          var td=$('<td></td>');
                          var a=$('<a></a>');
                          a.append(msg.data[i]['fields']['title']);
+                         a.attr("movie_id",msg.data[i]['pk']);
+                         a.click(function(){
+                             var movie_id = $(this).attr("movie_id");
+                             console.log(movie_id);
+                             $("#video_src").attr("src","https://movielens.org/movies/1");
+                         });
                          td.append(a);
                          tr.append(td);
                          $("#movie_list").append(tr);

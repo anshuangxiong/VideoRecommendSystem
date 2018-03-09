@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from user.models import Movies
+from recommend.models import Xsjz
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import Ratings
@@ -19,9 +20,11 @@ def recommend_best_score(request):
     try:
         user = request.session["user"]
         print("用户登录："+user['fields']['user_name']+"  userID:  "+str(user['pk']))
-        user2item_matrix, item2user_matrix = get_data()
-        W = user_sim_cosine(user2item_matrix)
-        rank_list = recommend_userCF(user2item_matrix, str(user['pk']), W, int(9999))
+        # user2item_matrix, item2user_matrix = get_data()
+        # W = user_sim_cosine(user2item_matrix)
+        # rank_list = recommend_userCF(user2item_matrix, str(user['pk']), W, int(9999))
+        page = request.POST.get('page')
+        rank_list = recommend_userCF2( str(user['pk']),page,  int(10))
         movie_ids=[]
         for i in range(len(rank_list)):
             movie_ids.append(int(rank_list[i][0]))
@@ -75,29 +78,34 @@ def get_data():
 def user_sim_cosine(user2item_matrix):
     W = defaultdict(defaultdict)  # 用户-用户-相似度矩阵
     user_list = user2item_matrix.keys()
+    print("开始计算相似矩阵")
     for i in user_list:
         for j in user_list:
             if i == j:
                 continue
             W[i][j] = len(set(user2item_matrix[i].keys()) & set(user2item_matrix[j].keys()))  # 交集
             W[i][j] /= math.sqrt(len(user2item_matrix[i].keys()) * len(user2item_matrix[j].keys()) * 1.0)
+    print("相似矩阵计算结束")
     return W
 
 
 def item_sim_cosine(item2user_matrix):
     W = defaultdict(defaultdict)  # 物品-物品-相似度矩阵
     item_list = item2user_matrix.keys()
+    print("开始计算相似矩阵")
     for i in item_list:
         for j in item_list:
             if i == j:
                 continue
             W[i][j] = len(set(item2user_matrix[i].keys()) & set(item2user_matrix[j].keys())) # 交集
             W[i][j] /= math.sqrt(len(item2user_matrix[i].keys())*len(item2user_matrix[j].keys())*1.0)
+    print("相似矩阵计算结束")
     return W
 
 
 def recommend_userCF(user2item_matrix, user_id, W, K=10):
     '''通过用户userid、训练集数据、用户相似度矩阵进行topN推荐'''
+    print("开始推荐")
     rank=defaultdict(int)
     # 获取用户的物品列表
     user_item_set = user2item_matrix[user_id].keys()
@@ -112,7 +120,28 @@ def recommend_userCF(user2item_matrix, user_id, W, K=10):
             rank[item_id] = w_score*item_score
     # 对所有推荐物品与打分按照排序分进行降序排序，取前K个物品
     rank_list = sorted(rank.items(),key=operator.itemgetter(1),reverse=True)[0:K]
+    print("推荐结束")
     return rank_list
+
+def recommend_userCF2( user_id,page ,K=10):
+    page = int(page)
+    print("推荐开始   " + str(time.time()))
+    rank = defaultdict(int)
+    user_items = Ratings.objects.filter(user_id=user_id)
+    movie_ids=[]
+    for user_item in user_items:
+        movie_ids.append(user_item.movie_id)
+    xsjzs = Xsjz.objects.filter(r=int(user_id)).order_by('v').reverse()[(page-1)*10:page*K]
+    for xsjz in xsjzs:
+        items = Ratings.objects.filter(user_id=xsjz.c).order_by('rating').reverse()[(page-1)*10:page*K]
+        for item in items:
+            if item.movie_id in movie_ids:
+                continue
+            rank[item.movie_id] = xsjz.v * item.rating
+    rank_list = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)[0:K]
+    print("推荐结束  " + str(time.time()))
+    return rank_list
+
 
 
 def recommend_ItemCF(user2item_matrix, user_id, W, K=10):

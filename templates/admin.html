@@ -1,167 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>推荐系统后台管理</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../static/user/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="../static/user/dist/css/AdminLTE.min.css">
- {% comment %} <link rel="stylesheet" href="../static/user/plugins/datatables/dataTables.bootstrap.css">{% endcomment %}
-  <link rel="stylesheet" href="../static/user/dist/css/skins/_all-skins.min.css">
-  <link rel="stylesheet" type="text/css" href="../static/js/bootstrapTable/bootstrap-table.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>推荐系统后台管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../static/user/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="../static/user/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../static/user/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/js/bootstrapTable/bootstrap-table.css"/>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
 
-  <header class="main-header">
-    <a  class="logo">
-      <span class="logo-mini"><b>A</b>dmin</span>
-      <span class="logo-lg"><b>推荐系统</b>后台管理</span>
-    </a>
-    <nav class="navbar navbar-static-top">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+    <header class="main-header">
+        <a class="logo">
+            <span class="logo-mini"><b>A</b>dmin</span>
+            <span class="logo-lg"><b>推荐系统</b>后台管理</span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-                <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs">Alexander Pierce</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle"
+                                     alt="User Image">
+
+                                <p>
+                                    Alexander Pierce - Web Developer
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                 </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- =============================================== -->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                <div class="pull-left info">
+                    <p>Alexander Pierce</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <!-- =============================================== -->
-
-  <aside class="main-sidebar">
-    <section class="sidebar">
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
-      </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
-        </div>
-      </form>
-      <ul class="sidebar-menu">
-          <li class="header">MAIN NAVIGATION</li>
-          <li class="treeview">
-              <a href="#">
-                  <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                  <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-              </a>
-              <ul class="treeview-menu">
-                  <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                  <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-              </ul>
-          </li>
-          <li class="active"><a href="#" id="video_manager"><i class="fa fa-link"></i> <span>视频管理</span></a></li>
-          <li><a href="#" id="user_manager"><i class="fa fa-link" ></i> <span>用户管理</span></a></li>
-          <li class="treeview">
-              <a href="#"><i class="fa fa-link"></i> <span>算法优化</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu">
-                  <li><a href="#">Link in level 2</a></li>
-                  <li><a href="#">Link in level 2</a></li>
-              </ul>
-          </li>
-      </ul>
-    </section>
-  </aside>
+                </div>
+            </form>
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="active"><a href="#" id="video_manager"><i class="fa fa-video-camera"></i> <span>视频管理</span></a></li>
+                <li><a href="#" id="user_manager"><i class="fa fa-user"></i> <span>用户管理</span></a></li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-superscript"></i> <span>算法优化</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#">相似度</a></li>
+                        <li><a href="#">推荐度</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
 
-  <!-- =============================================== -->
+    <!-- =============================================== -->
 
-  <div class="content-wrapper">
-    <section class="content-header">
-    </section>
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            {% comment %}<div class="box-header">
+    <div class="content-wrapper">
+        <section class="content-header">
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        {% comment %}<div class="box-header">
               <h3 class="box-title">Hover Data Table</h3>
             </div>{% endcomment %}
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="video_user_table" class="table table-bordered table-hover">
-              </table>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="video_user_table" class="table table-bordered table-hover">
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.3.7
+        </section>
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-    reserved.
-  </footer>
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.3.7
+        </div>
+        <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+        reserved.
+    </footer>
 
 
-  <div class="control-sidebar-bg"></div>
+    <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -169,8 +156,6 @@
 <script src="../static/user/bootstrap/js/bootstrap.min.js"></script>
 <script src="../static/user/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="../static/user/plugins/fastclick/fastclick.js"></script>
-{% comment %}<script src="../static/user/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../static/user/plugins/datatables/dataTables.bootstrap.min.js"></script>{% endcomment %}
 <script src="../static/user/dist/js/app.min.js"></script>
 <script src="../static/user/dist/js/demo.js"></script>
 <script type="text/javascript" src="../static/js/bootstrapTable/bootstrap-table.js"></script>
@@ -182,11 +167,11 @@
         TableInit("../administrator/videoList");
     });
 
-    $("#video_manager").click(function(){
+    $("#video_manager").click(function () {
         $("#video_user_table").bootstrapTable('destroy');
         TableInit("../administrator/videoList");
     });
-     $("#user_manager").click(function(){
+    $("#user_manager").click(function () {
         $("#video_user_table").bootstrapTable('destroy');
         TableInit("../administrator/userList");
     });
@@ -267,12 +252,11 @@
                 detailClose: 'glyphicon-minus icon-minus'
             },
             columns: [],
-
             onLoadSuccess: function () {
-                layer.msg("加载成功!", {
+                {% comment %}layer.msg("加载成功!", {
                     icon: 1,
                     time: 2000
-                });
+                });{% endcomment %}
             },
             onLoadError: function () {
                 //加载失败时执行
@@ -345,6 +329,7 @@
         }
 
     }
+
     //自定义列内容
     function genderOpt() {
         return ['<a id="edit" href="javascript:void(0)" title="编辑">',

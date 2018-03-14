@@ -1,222 +1,320 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>个性化视频推荐系统</title>
-    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="/static/js/bootstrapTable/bootstrap-table.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/AdminLTE.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/hivideo/hivideo.css" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../static/user/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="../static/user/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../static/user/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/hivideo/hivideo.css" />
     <style>
-        /* 登录页 */
-
-.login_title h1{font-size:24px;height:60px;line-height:60px;color:#a8a8a8;float:left;font-weight:bold;margin-left:44px;}
-.login_title a{width:100px;height:20px;display:block;font-size:16px;color:#5fb42a;text-indent:26px;background:url(/static/img/icons02.png) left 5px no-repeat;float:left;margin:20px 0 0 36px}
-
-.form_input{width:308px;height:250px;margin:20px auto;position:relative;}
-.name_input,.pass_input{width:306px;height:36px;border:1px solid #e0e0e0;background:url(/static/img/icons02.png) 280px -41px no-repeat #f8f8f8;outline:none;font-size:14px;text-indent:10px;position: absolute;left:0;top:0}
-.pass_input{top:65px;background-position:280px -95px;}
-
-.user_error,.pwd_error{color:#f00;position:absolute;left:0;top:43px;display:none}
-
-.pwd_error{top:110px;}
-
-.more_input{position:absolute;left:0;top:130px;width:100%}
-
-.more_input input{float:left;margin-top:2px;}
-.more_input label{float:left;margin-left:10px;}
-.more_input a{float:right;color:#666}
-.more_input a:hover{color:#ff8800}
-
-.input_submit{width:100%;height:40px;position:absolute;left:0;top:180px;background-color:#47aa34;color:#fff;font-size:22px;border:0px;font-family:'Microsoft Yahei';cursor:pointer;}
-
-
-/* 注册页面 */
-
-.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
-.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(/static/img/icons02.png) 35px 3px no-repeat;margin-top:15px}
-
-.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
-.reg_form li{height:70px;list-style-type:none}
-.reg_form li label{width:70px;height:40px;line-height:40px;float:left;font-size:14px;color:#a8a8a8}
-.reg_form li input{width:288px;height:38px;border:1px solid #e0e0e0;float:left;outline:none;text-indent:10px;background-color:#f8f8f8}
-.reg_form li.agreement input{width:15px;height:15px;float:left;margin-top:13px}
-.reg_form li.agreement label{width:300px;float:left;margin-left:10px;}
-.reg_form li.reg_sub input{width:360px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
-.reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
-
-/*视频播放器*/
-.main-wrap {
-    margin: 0 auto;
-    {% comment %}min-width: 320px;
-    max-width: 640px;{% endcomment %}
-}
-
-.main-wrap video {
-    width: 100%;
-}
-
+        /*视频播放器*/
+        .main-wrap {
+            margin: 0 auto;
+        {% comment %}min-width: 320px;
+        max-width: 640px;{% endcomment %}
+        }
+        .main-wrap video {
+            width: 100%;
+        }
     </style>
+
 </head>
-<body class="layout-top-nav">
-<div>
-    <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">个性化视频推荐系统</a>
-            </div>
-            <div>
-                <ul class="nav navbar-nav" id="nav_ul">
-                    <li class="active"><a id="recommend">推荐</a></li>
-                    <li><a  id="comedy" movie_type="Comedy">喜剧片</a></li>
-                    <li><a  id="horror" movie_type="Horror">恐怖片</a></li>
-                    <li><a  id="action" movie_type="Action">动作片</a></li>
-                    <li><a  id="thriller" movie_type="Thriller">科幻片</a></li>
-                    <li><a  id="adventure" movie_type="Adventure">冒险片</a></li>
-                    <li><a  id="mystery" movie_type="Mystery">推理剧</a></li>
-                    <li><a  id="children" movie_type="Children">动画片</a></li>
-                    <li><a  id="romance" movie_type="Romance">浪漫</a></li>
-                    <li><a  id="war" movie_type="War">战争</a></li>
-                </ul>
-            </div>
-            <div>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="find_text" placeholder="名称、演员">
-                     </div>
-                    <button type="button" class="btn btn-default" id="find_button">查找</button>
-                </form>
-            </div>
-            <ul class="nav navbar-nav navbar-right" id="user_info">
-                {% if request.session.username %}
-                    <li><a>用户：{{  request.session.username }}</a></li>
-                    <li><a id='logout'>退出</a></li>
-                {% else %}
-                    <li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                    <li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+<body class="hold-transition skin-blue layout-top-nav">
+<div class="wrapper">
+    <header class="main-header">
+        <nav class="navbar navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand"><b>个性化</b>视频推荐系统</a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
 
-    <div class="row" align="center" style="margin-left: 30px">
-        <div class="panel panel-primary col-md-2" style="margin: 15px;">
-            <div class="panel-heading">
-                <h3 class="panel-title" >Recommend</h3>
-                <div class="pull-right">
-                    <button type="button" class="btn btn-warning btn-xs" id="recommend_button">推荐</button>
+
+                <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                    <ul class="nav navbar-nav" id="nav_ul">
+                        <li class="active"><a id="recommend">推荐<span class="sr-only">(current)</span></a></li>
+                        <li><a id="comedy" movie_type="Comedy">喜剧片</a></li>
+                        <li><a id="horror" movie_type="Horror">恐怖片</a></li>
+                        <li><a id="action" movie_type="Action">动作片</a></li>
+                        <li><a id="thriller" movie_type="Thriller">科幻片</a></li>
+                        <li><a id="adventure" movie_type="Adventure">冒险片</a></li>
+                        <li><a id="mystery" movie_type="Mystery">推理剧</a></li>
+                        <li><a id="children" movie_type="Children">动画片</a></li>
+                        <li><a id="romance" movie_type="Romance">浪漫</a></li>
+                    </ul>
+
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <div class="navbar-custom-menu pull-right">
+                    <ul class="nav navbar-nav" >
+                        {% if request.session.username %}
+                           {% comment %} <li><a>用户：{{ request.session.username }}</a></li>
+                            <li><a id='logout'>退出</a></li>{% endcomment %}
+
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image"
+                                     alt="User Image">
+                                <span class="hidden-xs">{{ request.session.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle"
+                                         alt="User Image">
+                                    <p>
+                                        Alexander Pierce - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a  id='logout' class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        {% else %}
+                            <li><a data-toggle="modal" data-target="#loginModal"><span
+                                    class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                        {% endif %}
+
+
+
+                    </ul>
                 </div>
             </div>
-            <div class="panel-body">
-                <table id="movie_list" class="table">
-                        {% comment %}这里放置视频列表{% endcomment %}
-                </table>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div id="" class="box box-primary box-solid">
-                <div class="box-header with-border">
-                    <h5 class="box-title">
-                        <i class="fa fa-sliders"></i>Toy Story (1995)
-                    </h5>
+        </nav>
+    </header>
+    <!-- Full Width Column -->
+    <div class="content-wrapper">
+        <div class="container">
+            <section class="content-header">
+                <h1>
+                </h1>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="box box-solid box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" id="table_title" >视频列表</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-warning btn-xs" id="recommend_button">推荐</button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table id="movie_list" class="table">
+                                    {% comment %}这里放置视频列表{% endcomment %}
+                                </table>
+                            </div>
+                            <div class="box-footer">
+                                {% comment %}推荐视频列表{% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="box box-solid box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" id="movie_title">primary Box Example</h3>
+                                {% comment %}<div class="box-tools pull-right">
+                                    <span class="label label-warning">Label</span>
+                                </div>{% endcomment %}
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+                                            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4"
+                                                    type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {% comment %}视频的简介{% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                The footer of the box
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="box-body">
-                   {% comment %} <img src="static/img/d62a6059252dd42a1835151d023b5bb5c9eab843.jpg">{% endcomment %}
-                    <div>
+            </section>
+        </div>
 
+    </div>
+    <footer class="main-footer">
+        <div class="container">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">AnXiong</a>.</strong> All
+            rights
+            reserved.
+        </div>
+    </footer>
+</div>
+<div class="example-modal" >
+    <div class="modal modal-primary1 fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hold-transition login-page">
+                        <div class="login-box">
+                            <div class="login-logo">
+                                <a href="#"><b>LOGIN</b></a>
+                            </div>
+                            <div class="login-box-body">
+                                <p class="login-box-msg">Sign in to start your session</p>
+                                <form id="login_form" >
+                                    <div class="form-group has-feedback">
+                                        <input type="email" class="form-control" name="username" placeholder="Username">
+                                        <span class="glyphicon glyphicon-envelope  form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input type="password" class="form-control" name="pwd" placeholder="Password">
+                                        <span class="glyphicon glyphicon-lock p form-control-feedback"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="checkbox icheck">
+                                                <label>
+                                                    <input type="checkbox"> Remember Me
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button type="button" id="sub_login" class="btn btn-primary btn-block btn-flat">Sign In
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="social-auth-links text-center">
+                                    <p>- OR -</p>
+                                    <a data-toggle="modal" data-target="#registerModal" onclick="login_modal_hide()" class="btn btn-block btn-social btn-facebook btn-flat"><i
+                                            class="glyphicon glyphicon-user"></i> 新用户注册</a>
+                                </div>
+                                <a href="#">忘记密码</a><br>
+                            </div>
+                        </div>
                     </div>
-                    <div class="main-wrap">
-                        <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
-                            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4" type="video/mp4">
-                        </video>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- 模态框（Modal） -->
-<div class="modal fade1" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title login_title" id="loginModalLabel">用户登录</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form_input">
-					<form id="login_form">
-						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
-						<div class="user_error">输入错误</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
-						<div class="pwd_error">输入错误</div>
-						<div class="more_input clearfix">
-							{% comment %}<input type="checkbox" name="">
-							<label>记住用户名</label>{% endcomment %}
-							<a href="#">忘记密码</a>
-						</div>
-						<input type="button" id="sub_login" name="" value="登 录" class="input_submit">
-					</form>
-				</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+<div class="example-modal">
+    <div class="modal  fade" id="registerModal" tabindex="-1" role="dialog"
+         aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="hold-transition register-page">
+                        <div class="register-box">
+                            <div class="register-logo">
+                                <a href="../../index2.html"><b>新用户注册</b></a>
+                            </div>
 
-<!-- 注册模态框（Modal） -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="registerModalLabel">立即注册</h4>
-            </div>
-            <div class="modal-body">
-                <div class="reg_form clearfix">
-                    <form>
-                        <ul>
-                            <li>
-                                <input type="text" name="user_name" id="user_name" placeholder="请输入用户名">
-                                <span class="error_tip" id="user_name_tip">提示信息</span>
-                            </li>
-                            <li>
-                                <input type="password" name="pwd" id="pwd" placeholder="请输入密码">
-                                <span class="error_tip" id="pwd_tip">提示信息</span>
-                            </li>
-                            <li>
-                                <input type="password" name="cpwd" id="cpwd" placeholder="请确认密码">
-                                <span class="error_tip" id="cpwd_tip">提示信息</span>
-                            </li>
-                            <li>
-                                <input type="text" name="email" id="email" placeholder="请输入电子邮箱">
-                                <span class="error_tip" id="email_tip">提示信息</span>
-                            </li>
-                            <li class="reg_sub">
-                                <input type="button" id="sub_reg" value="注 册" name="">
-                            </li>
-                        </ul>
-                    </form>
+                            <div class="register-box-body">
+                                <p class="login-box-msg">Register a new membership</p>
+                                <form  >
+                                    <div class="form-group has-feedback">
+                                        <input type="text" class="form-control" id="user_name" placeholder="Full name">
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input type="password" class="form-control" id="pwd" placeholder="Password">
+                                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input type="password" class="form-control" id="cpwd" placeholder="Retype password">
+                                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="checkbox icheck">
+                                                <label>
+                                                    <input type="checkbox"> I agree to the <a href="#">terms</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button type="button" id="sub_reg" class="btn btn-primary btn-block btn-flat">Register
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="social-auth-links text-center">
+                                    <p>- OR -</p>
+                                    <a data-toggle="modal" onclick="register_modal_hide()" data-target="#loginModal" class="btn btn-block btn-social btn-facebook btn-flat"><i
+                                            class="glyphicon glyphicon-log-in"></i> 我早已有一个用户</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <div class="modal-footer">
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+    </div>
 </div>
-<!-- /.modal -->
 
-<script type="text/javascript" src="/static/js/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
-<script type="text/javascript" src="/static/js/layer/layer.js"></script>
-<script type="text/javascript" src="/static/js/hivideo.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/user/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/user/bootstrap/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../static/user/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../static/user/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/user/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/user/dist/js/demo.js"></script>
+<!--视频播放器 -->
+<script type="text/javascript" src="../static/js/hivideo.js"></script>
+
+<script type="text/javascript" src="../static/js/layer/layer.js"></script>
 <script>
     var page=1;
     var current_movie_type="";
@@ -238,7 +336,7 @@
             //点击的分类设置为激活状态
             $(e.target).parents('li').attr('class','active');
             //表格的表头为点击的标题
-            $(".panel-title").text($(e.target).attr('movie_type'));
+            $("#table_title").text($(e.target).attr('movie_type'));
             //请求数据
             get_movie_list('');
         });
@@ -251,7 +349,6 @@
             }else{
                 recommend_movies(page);
             }
-
         });
 
         $("#recommend").click(function(e){
@@ -260,7 +357,7 @@
                 $(this).attr('class','');
             });
             $(e.target).parents('li').attr('class','active');
-            $(".panel-title").text("Recommend");
+            $("#table_title").text("Recommend");
 
             recommend_movies(page);
         });
@@ -269,96 +366,67 @@
         $('#registerModal').modal('hide');
         //点击登录按钮
         $("#sub_login").click(function(){
-            $(".user_error").css('display','none');
-            $(".pwd_error").css('display','none');
              var username=$("#login_form :input[name='username']").val().trim();
              var pwd=$("#login_form :input[name='pwd']").val().trim();
             // $('#loginModal').modal('show');
             if(username ==''){
-                $(".user_error").text("用户名不能为空");
-                $(".user_error").css('display','block');
+                alert('用户名不能为空');
+                return;
             }
-            if(pwd ==''){
-                $(".pwd_error").text("密码不能为空");
-                $(".pwd_error").css('display','block');
-            }
-            $.ajax({
-                url:'../user/login',
-                type:'post',
-                data:{
-                    'username':username,
-                    'pwd':pwd,
-                },
-                success:function(msg){
-                    var msg = JSON.parse(msg);
-                    if(msg.code=='0000') {
-                        $("#user_info").html('');
-                        var li=$('<li></li>');
-                        li.append("<a>用户："+msg.data['username']+"</a>");
-                        var li2=$('<li></li>');
-                        li2.append("<a id='logout'>退出</a>");
-                        $("#user_info").append(li);
-                        $("#user_info").append(li2);
-                        $('#loginModal').modal('hide');
-                        $("#logout").click(function(){
-                            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
-                                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
-                                '');
-                            $.ajax({
-                                url:'../user/logout',
-                                type:'post',
-                                success:function(msg){
-                                    var msg = JSON.parse(msg);
-                                    if(msg.code=='0000'){
-                                        console.log(msg.info);
-                                    }
-                                }
-                            });
-                        });
-                    }else{
-                        console.log(msg.info);
-                        $(".user_error").text("输入错误");
-                        $(".user_error").css('display','block');
-                        $(".pwd_error").text("输入错误");
-                        $(".pwd_error").css('display','block');
+            else if(pwd ==''){
+                alert('密码不能为空');
+                return;
+            } else {
+                console.log("123");
+                $.ajax({
+                    url: '../user/login',
+                    type: 'post',
+                    data: {
+                        'username': username,
+                        'pwd': pwd,
+                    },
+                    success: function (msg) {
+                        var msg = JSON.parse(msg);
+                        if (msg.code == '0000') {
+                            window.location.reload();
+                        } else {
+                            alert("用户名或密码错误")
+                        }
                     }
-                }
-            });
+                });
+            }
+
         });
         //点击注册按钮
         $("#sub_reg").click(function(){
-            $("#user_name_tip").css('display','none');
-            $("#pwd_tip").css('display','none');
-            $("#cpwd_tip").css('display','none');
-            $("#email_tip").css('display','none');
             var username=$("#user_name").val();
             var pwd=$("#pwd").val();
             var cpwd=$("#cpwd").val();
             var email=$("#email").val();
             if(username == ''){
-                $("#user_name_tip").text("用户名不能为空");
-                $("#user_name_tip").css('display','block');
+                alert("用户名不能为空");
+                return;
             }
             else if(pwd == ''){
-                $("#pwd_tip").text("密码不能为空");
-                $("#pwd_tip").css('display','block');
+                alert("密码不能为空");
+                return;
             }
             else if(cpwd ==''){
-                $("#cpwd_tip").text("重复密码不能为空");
-                $("#cpwd_tip").css('display','block');
+                alert("重复密码不能为空");
+                return;
             }
             else if(email==''){
-                $("#email_tip").text("邮件地址不能为空");
-                $("#email_tip").css('display','block');
+                alert("邮件地址不能为空");
+                return;
             }
             else if(pwd!=''&&cpwd!=''&&pwd!=cpwd){
-                $("#cpwd_tip").text("两次密码输入不一致");
-                $("#cpwd_tip").css('display','block');
+                alert("两次密码输入不一致");
+                return;
             }
             //邮箱格式
             else if(email!=''&&!CheckMail(email)){
-                $("#email_tip").text("邮件地址格式不正确");
-                $("#email_tip").css('display','block');
+                alert("邮件地址格式不正确");
+                return;
             }
 
             $.ajax({
@@ -378,8 +446,10 @@
                             time : 1500
                         });
                     }else if(msg.code=='0001'){
-                         $("#user_name_tip").text("对不起，用户名已经存在");
-                         $("#user_name_tip").css('display','block');
+                        layer.msg("对不起，用户名已经存在", {
+                            icon : 2,
+                            time : 1500
+                        });
                     }else{
                         layer.msg(msg.info, {
                             icon : 2,
@@ -411,16 +481,13 @@
 
 
         $("#logout").click(function () {
-            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
-                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
-                '');
             $.ajax({
                 url: '../user/logout',
                 type: 'post',
                 success: function (msg) {
                     var msg = JSON.parse(msg);
                     if (msg.code == '0000') {
-                        console.log(msg.info);
+                       window.location.reload();
                     }
                 }
             });
@@ -446,13 +513,17 @@
                         var tr = $('<tr></tr>');
                         var td = $('<td></td>');
                         var a = $('<a></a>');
+                        a.css("cursor","pointer");
                         a.append(msg.data[i]['fields']['title']);
                         a.attr("movie_id",msg.data[i]['pk']);
-                         a.click(function(){
-                             var movie_id = $(this).attr("movie_id");
-                             console.log(movie_id);
-                             $("#video_src").attr("src","https://movielens.org/movies/1");
-                         });
+                        a.attr("movie_title",msg.data[i]['fields']['title']);
+                        a.click(function(){
+                            var movie_id = $(this).attr("movie_id");
+                            var movie_title = $(this).attr("movie_title");
+                            $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
+                            console.log(movie_id);
+                            $("#video_src").attr("src","https://movielens.org/movies/1");
+                        });
                         td.append(a);
                         tr.append(td);
                         $("#movie_list").append(tr);
@@ -487,10 +558,14 @@
                          var tr=$('<tr></tr>');
                          var td=$('<td></td>');
                          var a=$('<a></a>');
+                         a.css("cursor","pointer");
                          a.append(msg.data[i]['fields']['title']);
                          a.attr("movie_id",msg.data[i]['pk']);
+                         a.attr("movie_title",msg.data[i]['fields']['title']);
                          a.click(function(){
                              var movie_id = $(this).attr("movie_id");
+                             var movie_title = $(this).attr("movie_title");
+                             $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
                              console.log(movie_id);
                              $("#video_src").attr("src","https://movielens.org/movies/1");
                          });
@@ -501,6 +576,13 @@
                 }
             }
         });
+    }
+
+    function login_modal_hide(){
+        $('#loginModal').modal('hide');
+    }
+    function register_modal_hide(){
+        $('#registerModal').modal('hide');
     }
 </script>
 </body>

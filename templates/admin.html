@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>推荐系统后台管理</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../static/user/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="../static/user/dist/css/AdminLTE.min.css">
+ {% comment %} <link rel="stylesheet" href="../static/user/plugins/datatables/dataTables.bootstrap.css">{% endcomment %}
+  <link rel="stylesheet" href="../static/user/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/js/bootstrapTable/bootstrap-table.css" />
+</head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <a  class="logo">
+      <span class="logo-mini"><b>A</b>dmin</span>
+      <span class="logo-lg"><b>推荐系统</b>后台管理</span>
+    </a>
+    <nav class="navbar navbar-static-top">
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">Alexander Pierce</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  Alexander Pierce - Web Developer
+                  <small>Member since Nov. 2012</small>
+                </p>
+              </li>
+              <!-- Menu Body -->
+              <li class="user-body">
+                <div class="row">
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Followers</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Sales</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Friends</a>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =============================================== -->
+
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>Alexander Pierce</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <ul class="sidebar-menu">
+          <li class="header">MAIN NAVIGATION</li>
+          <li class="treeview">
+              <a href="#">
+                  <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                  <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                  <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+              </ul>
+          </li>
+          <li class="active"><a href="#" id="video_manager"><i class="fa fa-link"></i> <span>视频管理</span></a></li>
+          <li><a href="#" id="user_manager"><i class="fa fa-link" ></i> <span>用户管理</span></a></li>
+          <li class="treeview">
+              <a href="#"><i class="fa fa-link"></i> <span>算法优化</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                  <li><a href="#">Link in level 2</a></li>
+                  <li><a href="#">Link in level 2</a></li>
+              </ul>
+          </li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- =============================================== -->
+
+  <div class="content-wrapper">
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            {% comment %}<div class="box-header">
+              <h3 class="box-title">Hover Data Table</h3>
+            </div>{% endcomment %}
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="video_user_table" class="table table-bordered table-hover">
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.3.7
+    </div>
+    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+    reserved.
+  </footer>
+
+
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<script src="../static/user/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../static/user/bootstrap/js/bootstrap.min.js"></script>
+<script src="../static/user/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="../static/user/plugins/fastclick/fastclick.js"></script>
+{% comment %}<script src="../static/user/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../static/user/plugins/datatables/dataTables.bootstrap.min.js"></script>{% endcomment %}
+<script src="../static/user/dist/js/app.min.js"></script>
+<script src="../static/user/dist/js/demo.js"></script>
+<script type="text/javascript" src="../static/js/bootstrapTable/bootstrap-table.js"></script>
+<script type="text/javascript" src="../static/js/bootstrapTable/bootstrap-table-locale-all.js"></script>
+<script type="text/javascript" src="../static/js/layer/layer.js"></script>
+<script>
+
+    $(function () {
+        TableInit("../administrator/videoList");
+    });
+
+    $("#video_manager").click(function(){
+        $("#video_user_table").bootstrapTable('destroy');
+        TableInit("../administrator/videoList");
+    });
+     $("#user_manager").click(function(){
+        $("#video_user_table").bootstrapTable('destroy');
+        TableInit("../administrator/userList");
+    });
+
+
+    function TableInit(url) {
+        var commom_attr = {
+            //请求地址
+            url: url,
+            //请求方式
+            method: 'post',
+            //请求内容类型
+            contentType: "application/x-www-form-urlencoded",
+            //数据类型
+            dataType: "json",
+            //table高度，
+            //如果没有设置height属性，
+            //表格自动根据记录条数觉得表格高度
+            height: '482',
+            //是否显示行间隔色
+            striped: true,
+            //是否启用排序
+            sortable: false,
+            //排序方式
+            sortOrder: "asc",
+            //是否使用缓存
+            cache: false,
+            //每行的唯一标识
+            uniqueId: "id",
+            //指定工具栏
+            toolbar: "#toolbar",
+            //显示隐藏列
+            showColumns: false,
+            //显示刷新按钮
+            showRefresh: false,
+            //切换显示样式
+            showToggle: false,
+            //显示Table脚部
+            showFooter: false,
+            //是否显示详细视图
+            cardView: false,
+            //是否显示父子表，是否显示详情
+            detailView: false,
+            //detail格式化
+            //detailFormatter: genderDetail,
+            //是否显示分页
+            pagination: true,
+            //是否显示分页按钮
+            showPaginationSwitch: false,
+            //是否启用点击选中行
+            clickToSelect: false,
+            //最少要显示的列数
+            minimumCountColumns: 2,
+            //cell没有值时显示
+            undefinedText: '-',
+            //分页方式：client客户端分页，server服务端分页
+            //sidePagination: "server",
+            //每页的记录行数
+            pageSize: 10,
+            //初始化加载第1页，默认第1页
+            pageNumber: 1,
+            //可供选择的每页的行数
+            pageList: "[10, 25, 50, 80, 100, 200, 300]",
+            paginationFirstText: "首页",
+            paginationPreText: "上一页",
+            paginationNextText: "下一页",
+            paginationLastText: "末页",
+            buttonsClass: 'default',
+            iconsPrefix: 'glyphicon',
+            //queryParams: queryParams,
+            icons: {
+                paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
+                paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
+                refresh: 'glyphicon-refresh icon-refresh',
+                toggle: 'glyphicon-list-alt icon-list-alt',
+                columns: 'glyphicon-th icon-th',
+                detailOpen: 'glyphicon-plus icon-plus',
+                detailClose: 'glyphicon-minus icon-minus'
+            },
+            columns: [],
+
+            onLoadSuccess: function () {
+                layer.msg("加载成功!", {
+                    icon: 1,
+                    time: 2000
+                });
+            },
+            onLoadError: function () {
+                //加载失败时执行
+                layer.msg("加载失败!", {
+                    icon: 2,
+                    time: 2000
+                });
+            },
+            formatLoadingMessage: function () {
+                //正在加载
+                return "请稍等，正在加载中...";
+            },
+            formatNoMatches: function () {
+                //没有匹配的结果
+                return '无符合条件的记录';
+            }
+        };
+
+
+        //先销毁表格
+        $("#video_user_table").bootstrapTable('destroy');
+        if (url == "../administrator/videoList") {
+            commom_attr['columns'] = [{
+                title: '序号',
+                field: 'id',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                title: '电影名称',
+                field: 'movie_title',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '类别',
+                field: 'genres',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '操作',
+                field: 'operate',
+                align: 'center',
+                //events : operateEvents,
+                formatter: genderOpt
+            }];
+            $("#video_user_table").bootstrapTable(commom_attr);
+        } else {
+            commom_attr['columns'] = [{
+                title: '序号',
+                field: 'id',
+                align: 'center',
+                valign: 'middle',
+            }, {
+                title: '用户名称',
+                field: 'username',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '邮箱',
+                field: 'email',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '操作',
+                field: 'operate',
+                align: 'center',
+                //events : operateEvents,
+                formatter: genderOpt
+            }];
+            $("#video_user_table").bootstrapTable(commom_attr);
+        }
+
+    }
+    //自定义列内容
+    function genderOpt() {
+        return ['<a id="edit" href="javascript:void(0)" title="编辑">',
+            '<i class="glyphicon glyphicon-pencil"></i>', '</a>  ',
+            '<a id="remove" href="javascript:void(0)" title="删除">',
+            '<i class="glyphicon glyphicon-trash"></i>', '</a>'].join('');
+    }
+
+</script>
+</body>
+</html>

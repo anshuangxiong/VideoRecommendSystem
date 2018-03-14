@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个性化视频推荐系统</title>
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrapTable/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/AdminLTE.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/AdminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/hivideo/hivideo.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/pingfen.css" />
+    <style>
+        /* 登录页 */
+
+.login_title h1{font-size:24px;height:60px;line-height:60px;color:#a8a8a8;float:left;font-weight:bold;margin-left:44px;}
+.login_title a{width:100px;height:20px;display:block;font-size:16px;color:#5fb42a;text-indent:26px;background:url(/static/img/icons02.png) left 5px no-repeat;float:left;margin:20px 0 0 36px}
+
+.form_input{width:308px;height:250px;margin:20px auto;position:relative;}
+.name_input,.pass_input{width:306px;height:36px;border:1px solid #e0e0e0;background:url(/static/img/icons02.png) 280px -41px no-repeat #f8f8f8;outline:none;font-size:14px;text-indent:10px;position: absolute;left:0;top:0}
+.pass_input{top:65px;background-position:280px -95px;}
+
+.user_error,.pwd_error{color:#f00;position:absolute;left:0;top:43px;display:none}
+
+.pwd_error{top:110px;}
+
+.more_input{position:absolute;left:0;top:130px;width:100%}
+
+.more_input input{float:left;margin-top:2px;}
+.more_input label{float:left;margin-left:10px;}
+.more_input a{float:right;color:#666}
+.more_input a:hover{color:#ff8800}
+
+.input_submit{width:100%;height:40px;position:absolute;left:0;top:180px;background-color:#47aa34;color:#fff;font-size:22px;border:0px;font-family:'Microsoft Yahei';cursor:pointer;}
+
+
+/* 注册页面 */
+
+.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
+.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(/static/img/icons02.png) 35px 3px no-repeat;margin-top:15px}
+
+.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
+.reg_form li{height:70px;list-style-type:none}
+.reg_form li label{width:70px;height:40px;line-height:40px;float:left;font-size:14px;color:#a8a8a8}
+.reg_form li input{width:288px;height:38px;border:1px solid #e0e0e0;float:left;outline:none;text-indent:10px;background-color:#f8f8f8}
+.reg_form li.agreement input{width:15px;height:15px;float:left;margin-top:13px}
+.reg_form li.agreement label{width:300px;float:left;margin-left:10px;}
+.reg_form li.reg_sub input{width:360px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
+.reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
+
+/*视频播放器*/
+.main-wrap {
+    margin: 0 auto;
+    {% comment %}min-width: 320px;
+    max-width: 640px;{% endcomment %}
+}
+.main-wrap video {
+    width: 100%;
+}
+
+    </style>
+</head>
+<body class="layout-top-nav">
+<div>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">个性化视频推荐系统</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav" id="nav_ul">
+                    <li class="active"><a id="recommend">推荐</a></li>
+                    <li><a  id="comedy" movie_type="Comedy">喜剧片</a></li>
+                    <li><a  id="horror" movie_type="Horror">恐怖片</a></li>
+                    <li><a  id="action" movie_type="Action">动作片</a></li>
+                    <li><a  id="thriller" movie_type="Thriller">科幻片</a></li>
+                    <li><a  id="adventure" movie_type="Adventure">冒险片</a></li>
+                    <li><a  id="mystery" movie_type="Mystery">推理剧</a></li>
+                    <li><a  id="children" movie_type="Children">动画片</a></li>
+                    <li><a  id="romance" movie_type="Romance">浪漫</a></li>
+                    <li><a  id="war" movie_type="War">战争</a></li>
+                </ul>
+            </div>
+            <div>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="find_text" placeholder="名称、演员">
+                     </div>
+                    <button type="button" class="btn btn-default" id="find_button">查找</button>
+                </form>
+            </div>
+            <ul class="nav navbar-nav navbar-right" id="user_info">
+                {% if request.session.username %}
+                    <li><a>用户：{{  request.session.username }}</a></li>
+                    <li><a id='logout'>退出</a></li>
+                {% else %}
+                    <li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                    <li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row" align="center" style="margin-left: 30px">
+        <div class="panel panel-primary col-md-2" style="margin: 15px;">
+            <div class="panel-heading">
+                <h3 class="panel-title" >Recommend</h3>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-warning btn-xs" id="recommend_button">推荐</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table id="movie_list" class="table">
+                        {% comment %}这里放置视频列表{% endcomment %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="" class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <h5 class="box-title" id="movie_title">
+                        <i class="fa fa-sliders"></i>Toy Story (1995)
+                    </h5>
+                </div>
+                <div class="box-body">
+                   {% comment %} <img src="static/img/d62a6059252dd42a1835151d023b5bb5c9eab843.jpg">{% endcomment %}
+                    <div class="row">
+                        <div class="main-wrap col-sm-9">
+                            <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+                                <source src="http://www.html5videoplayer.net/videos/madagascar3.mp444" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="main-wrap col-sm-3">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="scoremark" class="scoremark scores pull-left">
+                            <span class="score">8.0</span>
+                            <span class="star">
+                                    <span class="ystar" style="width:10%"></span>
+                                   <ul>
+                                    <li><a href="javascript:void(0)" data-name="很差" class="one-star">1</a></li>
+                                    <li><a href="javascript:void(0)" data-name="较差" class="two-stars">2</a></li>
+                                    <li><a href="javascript:void(0)" data-name="一般" class="three-stars">3</a></li>
+                                    <li><a href="javascript:void(0)" data-name="较好" class="four-stars">4</a></li>
+                                    <li><a href="javascript:void(0)" data-name="很好" class="five-stars">5</a></li>
+                                   </ul>
+                                </span>
+                            <div style="left: 0px; display: none;" class="tips"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title login_title" id="loginModalLabel">用户登录</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form_input">
+					<form id="login_form">
+						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+						<div class="user_error">输入错误</div>
+						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+						<div class="pwd_error">输入错误</div>
+						<div class="more_input clearfix">
+							{% comment %}<input type="checkbox" name="">
+							<label>记住用户名</label>{% endcomment %}
+							<a href="#">忘记密码</a>
+						</div>
+						<input type="button" id="sub_login" name="" value="登 录" class="input_submit">
+					</form>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- 注册模态框（Modal） -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="registerModalLabel">立即注册</h4>
+            </div>
+            <div class="modal-body">
+                <div class="reg_form clearfix">
+                    <form>
+                        <ul>
+                            <li>
+                                <input type="text" name="user_name" id="user_name" placeholder="请输入用户名">
+                                <span class="error_tip" id="user_name_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="password" name="pwd" id="pwd" placeholder="请输入密码">
+                                <span class="error_tip" id="pwd_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="password" name="cpwd" id="cpwd" placeholder="请确认密码">
+                                <span class="error_tip" id="cpwd_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <input type="text" name="email" id="email" placeholder="请输入电子邮箱">
+                                <span class="error_tip" id="email_tip">提示信息</span>
+                            </li>
+                            <li class="reg_sub">
+                                <input type="button" id="sub_reg" value="注 册" name="">
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript" src="/static/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrapTable/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="/static/js/layer/layer.js"></script>
+<script type="text/javascript" src="/static/js/hivideo.js"></script>
+<script>
+    var page=1;
+    var current_movie_type="";
+    var find_text="";
+    $(function(){
+        recommend_movies(page);
+        //给视频分类注册点击事件
+        $("#comedy,#horror,#action,#thriller,#adventure,#mystery,#children,#romance,#war").click(function(e){
+            find_text='';
+            current_movie_type=$(e.target).attr('movie_type');
+            page=1;
+            //点击非推荐时button的文本显示为更多
+            $("#recommend_button").text("更多");
+            //console.log($(e.target).attr('movie_type'));
+            //设置所有的class为''(都不是激活状态)
+            $("#nav_ul").find('li').each(function(){
+                $(this).attr('class','');
+            });
+            //点击的分类设置为激活状态
+            $(e.target).parents('li').attr('class','active');
+            //表格的表头为点击的标题
+            $(".panel-title").text($(e.target).attr('movie_type'));
+            //请求数据
+            get_movie_list('');
+        });
+
+        //给更多按钮注册点击事件
+        $("#recommend_button").click(function(e){
+            page=page+1;
+            if($(this).text()!="推荐"){
+                get_movie_list(find_text);
+            }else{
+                recommend_movies(page);
+            }
+        });
+
+        $("#recommend").click(function(e){
+            $("#recommend_button").text("推荐");
+            $("#nav_ul").find('li').each(function(){
+                $(this).attr('class','');
+            });
+            $(e.target).parents('li').attr('class','active');
+            $(".panel-title").text("Recommend");
+
+            recommend_movies(page);
+        });
+
+        $('#loginModal').modal('hide');
+        $('#registerModal').modal('hide');
+        //点击登录按钮
+        $("#sub_login").click(function(){
+            $(".user_error").css('display','none');
+            $(".pwd_error").css('display','none');
+             var username=$("#login_form :input[name='username']").val().trim();
+             var pwd=$("#login_form :input[name='pwd']").val().trim();
+            // $('#loginModal').modal('show');
+            if(username ==''){
+                $(".user_error").text("用户名不能为空");
+                $(".user_error").css('display','block');
+            }
+            if(pwd ==''){
+                $(".pwd_error").text("密码不能为空");
+                $(".pwd_error").css('display','block');
+            }
+            $.ajax({
+                url:'../user/login',
+                type:'post',
+                data:{
+                    'username':username,
+                    'pwd':pwd,
+                },
+                success:function(msg){
+                    var msg = JSON.parse(msg);
+                    if(msg.code=='0000') {
+                        $("#user_info").html('');
+                        var li=$('<li></li>');
+                        li.append("<a>用户："+msg.data['username']+"</a>");
+                        var li2=$('<li></li>');
+                        li2.append("<a id='logout'>退出</a>");
+                        $("#user_info").append(li);
+                        $("#user_info").append(li2);
+                        $('#loginModal').modal('hide');
+                        $("#logout").click(function(){
+                            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
+                                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
+                                '');
+                            $.ajax({
+                                url:'../user/logout',
+                                type:'post',
+                                success:function(msg){
+                                    var msg = JSON.parse(msg);
+                                    if(msg.code=='0000'){
+                                        console.log(msg.info);
+                                    }
+                                }
+                            });
+                        });
+                    }else{
+                        console.log(msg.info);
+                        $(".user_error").text("输入错误");
+                        $(".user_error").css('display','block');
+                        $(".pwd_error").text("输入错误");
+                        $(".pwd_error").css('display','block');
+                    }
+                }
+            });
+        });
+        //点击注册按钮
+        $("#sub_reg").click(function(){
+            $("#user_name_tip").css('display','none');
+            $("#pwd_tip").css('display','none');
+            $("#cpwd_tip").css('display','none');
+            $("#email_tip").css('display','none');
+            var username=$("#user_name").val();
+            var pwd=$("#pwd").val();
+            var cpwd=$("#cpwd").val();
+            var email=$("#email").val();
+            if(username == ''){
+                $("#user_name_tip").text("用户名不能为空");
+                $("#user_name_tip").css('display','block');
+            }
+            else if(pwd == ''){
+                $("#pwd_tip").text("密码不能为空");
+                $("#pwd_tip").css('display','block');
+            }
+            else if(cpwd ==''){
+                $("#cpwd_tip").text("重复密码不能为空");
+                $("#cpwd_tip").css('display','block');
+            }
+            else if(email==''){
+                $("#email_tip").text("邮件地址不能为空");
+                $("#email_tip").css('display','block');
+            }
+            else if(pwd!=''&&cpwd!=''&&pwd!=cpwd){
+                $("#cpwd_tip").text("两次密码输入不一致");
+                $("#cpwd_tip").css('display','block');
+            }
+            //邮箱格式
+            else if(email!=''&&!CheckMail(email)){
+                $("#email_tip").text("邮件地址格式不正确");
+                $("#email_tip").css('display','block');
+            }
+
+            $.ajax({
+                url:'../user/register',
+                data:{
+                    'username':username,
+                    'pwd':pwd,
+                    'email':email
+                },
+                method:'post',
+                success:function(msg){
+                    var msg = JSON.parse(msg);
+                    if(msg.code=='0000'){
+                        $('#registerModal').modal('hide');
+                        layer.msg("恭喜您"+msg.data['username']+"注册成功", {
+                            icon : 1,
+                            time : 1500
+                        });
+                    }else if(msg.code=='0001'){
+                         $("#user_name_tip").text("对不起，用户名已经存在");
+                         $("#user_name_tip").css('display','block');
+                    }else{
+                        layer.msg(msg.info, {
+                            icon : 2,
+                            time : 1500
+                        });
+                    }
+                }
+            });
+        });
+
+        //点击查找按钮
+        $("#find_button").click(function(){
+            current_movie_type='';
+            page=1;
+            find_text = $("#find_text").val().trim();
+
+            if(find_text==''){
+                return;
+            }else{
+                $("#recommend_button").text("更多");
+                $("#nav_ul").find('li').each(function(){
+                    $(this).attr('class','');
+                });
+                $(".panel-title").text(find_text);
+                get_movie_list(find_text);
+            }
+        });
+
+
+
+        $("#logout").click(function () {
+            $("#user_info").html('<li><a data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-user"></span> 注册</a></li>\n' +
+                '<li><a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>\n' +
+                '');
+            $.ajax({
+                url: '../user/logout',
+                type: 'post',
+                success: function (msg) {
+                    var msg = JSON.parse(msg);
+                    if (msg.code == '0000') {
+                        console.log(msg.info);
+                    }
+                }
+            });
+        });
+    });
+
+
+    function get_movie_list(findtext) {
+        $.ajax({
+            url: "../user/list",
+            data: {
+                'movie_type': current_movie_type,
+                'page':page,
+                'findtext':findtext,
+            },
+            method: 'post',
+            success: function (msg) {
+                var msg = JSON.parse(msg);
+                if (msg.code == '0000') {
+                    $("#movie_list").html("");
+                    msg.data = JSON.parse(msg.data);
+                    for (var i = 0; i < msg.data.length; i++) {
+                        var tr = $('<tr></tr>');
+                        var td = $('<td></td>');
+                        var a = $('<a></a>');
+                        a.css("cursor","pointer");
+                        a.append(msg.data[i]['fields']['title']);
+                        a.attr("movie_id",msg.data[i]['pk']);
+                        a.attr("movie_title",msg.data[i]['fields']['title']);
+                        a.click(function(){
+                            var movie_id = $(this).attr("movie_id");
+                            var movie_title = $(this).attr("movie_title");
+                            $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
+                            console.log(movie_id);
+                            $("#video_src").attr("src","https://movielens.org/movies/1");
+                        });
+                        td.append(a);
+                        tr.append(td);
+                        $("#movie_list").append(tr);
+                    }
+                }
+            }
+        });
+    }
+
+    function CheckMail(mail) {
+        var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (filter.test(mail))
+            return true;
+        else {
+            return false;
+        }
+    }
+
+    function recommend_movies(page){
+        $.ajax({
+            url:"../recommend/score",
+            method:'post',
+            data:{
+                'page':page
+            },
+            success:function(msg){
+                var msg = JSON.parse(msg);
+                if(msg.code=='0000'){
+                     $("#movie_list").html("");
+                     msg.data=JSON.parse(msg.data);
+                     for(var i=0;i<msg.data.length;i++){
+                         var tr=$('<tr></tr>');
+                         var td=$('<td></td>');
+                         var a=$('<a></a>');
+                         a.css("cursor","pointer");
+                         a.append(msg.data[i]['fields']['title']);
+                         a.attr("movie_id",msg.data[i]['pk']);
+                         a.attr("movie_title",msg.data[i]['fields']['title']);
+                         a.click(function(){
+                             var movie_id = $(this).attr("movie_id");
+                             var movie_title = $(this).attr("movie_title");
+                             $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
+                             console.log(movie_id);
+                             $("#video_src").attr("src","https://movielens.org/movies/1");
+                         });
+                         td.append(a);
+                         tr.append(td);
+                         $("#movie_list").append(tr);
+                     }
+                }
+            }
+        });
+    }
+
+    starScore($(".scoremark"));
+    function starScore(star){
+        star.find(".star ul li a").mouseenter(function(){
+        var txt = $(this).attr("data-name");
+        var x = $(this).parent("li").index();
+        star.find(".tips").html(txt).css("left",-6+x*24).show();
+        });
+        star.find(".star ul li a").mouseleave(function(){
+            star.find(".tips").html("").css("left",0).hide();
+        });
+    }
+</script>
+</body>
+</html>

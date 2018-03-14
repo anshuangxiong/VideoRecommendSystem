@@ -15,6 +15,7 @@ import time
 # Create your views here.
 logger = logging.getLogger(__name__)
 
+
 @csrf_exempt
 def recommend_best_score(request):
     try:
@@ -123,6 +124,7 @@ def recommend_userCF(user2item_matrix, user_id, W, K=10):
     print("推荐结束")
     return rank_list
 
+
 def recommend_userCF2( user_id,page ,K=10):
     page = int(page)
     print("推荐开始   " + str(time.time()))
@@ -141,7 +143,6 @@ def recommend_userCF2( user_id,page ,K=10):
     rank_list = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)[0:K]
     print("推荐结束  " + str(time.time()))
     return rank_list
-
 
 
 def recommend_ItemCF(user2item_matrix, user_id, W, K=10):

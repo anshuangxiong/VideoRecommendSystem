@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from user import views
+import user
+import administrator
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^log/', include('log.urls', namespace='log')),  # 日志模块
     url(r'^user/', include('user.urls', namespace='user')),  # 用户模块
     url(r'^recommend/', include('recommend.urls', namespace='recommend')),  # 推荐模块
-    url(r'^$', views.index, name='index'),  # 首页
+    url(r'^administrator/', include('administrator.urls', namespace='administrator')),  # 后台管理模块
+    url(r'^$', user.views.index, name='index'),  # 首页
+    url(r'^video/admin$', administrator.views.administrator, name='administrator'),  # 后台管理
 ]

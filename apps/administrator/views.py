@@ -24,17 +24,17 @@ def administrator(request):
 
 @csrf_exempt
 def videoList(request):
-    movies = Movies.objects.all()
+    movies = Movies.objects.all().order_by('movie_id')
     lists = []
     for movie in movies:
-        movie_json = {"id": movie.movie_id, 'movie_title': movie.title, 'genres': movie.genres}
+        movie_json = {"id": movie.movie_id, 'movie_title': movie.title,'year':movie.year, 'genres': movie.genres}
         lists.append(movie_json)
     return JsonResponse(lists,  safe=False, content_type='application/json')
 
 
 @csrf_exempt
 def userList(request):
-    sysusers = Sysusers.objects.all()
+    sysusers = Sysusers.objects.all().order_by('user_id')
     lists = []
     for user in sysusers:
         user_json = {"id": user.user_id, 'username': user.user_name, 'email': user.email}

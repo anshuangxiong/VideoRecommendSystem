@@ -13,23 +13,24 @@ from django.db import models
 class Movies(models.Model):
     movie_id = models.FloatField(primary_key=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    year = models.FloatField(blank=True, null=True)
     genres = models.CharField(max_length=255, blank=True, null=True)
+    year = models.CharField(max_length=5, blank=True, null=True)
     genres_en = models.CharField(max_length=255, blank=True, null=True)
+    m_desc = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'movies'
+        db_table = 'MOVIES'
 
 
 class Links(models.Model):
     movie_id = models.FloatField(primary_key=True)
-    imbd_id = models.FloatField(blank=True, null=True)
+    imdb_id = models.FloatField(blank=True, null=True)
     tmdb_id = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'links'
+        db_table = 'LINKS'
 
 
 class Ratings(models.Model):
@@ -40,7 +41,7 @@ class Ratings(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'ratings'
+        db_table = 'RATINGS'
         unique_together = (('user_id', 'movie_id'),)
 
 
@@ -52,7 +53,7 @@ class Tags(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tags'
+        db_table = 'TAGS'
 
 
 class Sysusers(models.Model):
@@ -64,4 +65,4 @@ class Sysusers(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'sysusers'
+        db_table = 'SYSUSERS'

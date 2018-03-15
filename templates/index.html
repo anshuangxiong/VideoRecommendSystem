@@ -56,7 +56,10 @@
 
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                        <input type="text" class="form-control" id="find_text" placeholder="Search">
+                            <button type="button" name="search" id="find_button" class="btn btn-flat btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -67,7 +70,8 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image"
                                      alt="User Image">
-                                <span class="hidden-xs">{{ request.session.username }}</span>
+                                <span style="display: none" id="loginuser" >{{ request.session.user.pk }}</span>
+                                <span class="hidden-xs" >{{ request.session.username }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
@@ -141,18 +145,29 @@
                     <div class="col-sm-9">
                         <div class="box box-solid box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title" id="movie_title">primary Box Example</h3>
-                                {% comment %}<div class="box-tools pull-right">
-                                    <span class="label label-warning">Label</span>
-                                </div>{% endcomment %}
+                                <h3 class="box-title" id="movie_title">视频名称</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
-                                            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4"
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+                                            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp444"
                                                     type="video/mp4">
-                                        </video>
+                                            </video>
+                                            </div>
+
+                                        </div>
+                                        <div class="row" style="margin-top: 30px">
+                                            <div class="col-sm-2">评分：</div>
+                                            <div class="col-sm-4" >
+                                                <input type="text" value="" id="score_value" class="slider form-control" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="yellow">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" id="score_btn" class="btn btn-block btn-primary btn-sm">打分</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-3">
                                         {% comment %}视频的简介{% endcomment %}
@@ -162,40 +177,46 @@
                                             </div>
                                             <!-- /.box-header -->
                                             <div class="box-body">
+                                                <p class="text-muted" style="display: none" id="detail_id">
+                                                </p>
                                                 <strong><i class="fa fa-book margin-r-5"></i> Name</strong>
-                                                <p class="text-muted">
+                                                <p class="text-muted" id="detail_name">
                                                     Perfect Blue
                                                 </p>
                                                 <hr>
                                                 <strong><i class="fa fa-map-marker margin-r-5"></i> Year</strong>
-                                                <p class="text-muted">1995</p>
+                                                <p class="text-muted" id="detail_year">1995</p>
                                                 <hr>
                                                 <strong><i class="fa fa-pencil margin-r-5"></i> GENRES</strong>
-                                                <p>
-                                                    <span class="label label-danger">Animation</span>
-                                                    <span class="label label-success">Thriller</span>
+                                                <div id="detail_genres">
                                                     <span class="label label-info">Mystery</span>
-                                                    <span class="label label-warning">Comedy</span>
-                                                    <span class="label label-primary">Romance</span>
-                                                </p>
+                                                    <span class="label label-info">Mystery</span>
+                                                    <span class="label label-info">Mystery</span>
+                                                    <span class="label label-info">Mystery</span>
+                                                    <span class="label label-info">Mystery</span>
+                                                    <span class="label label-info">Mystery</span>
+                                                </div>
                                                 <hr>
                                                 <strong><i class="fa fa-file-text-o margin-r-5"></i> DESC</strong>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                                                    fermentum enim neque.</p>
+                                                <div id="detail_desc" style="height:80px;overflow-y:auto;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                                                    fermentum enim neque.
+                                                </div>
                                             </div>
-                                            <!-- /.box-body -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-footer">
+                            {% comment %}<div class="box-footer">
                                 <div class="row" style="margin-top: 10px">
-                                    <div class="col-lg-1">评分：</div>
+                                    <div class="col-sm-1">评分：</div>
                                     <div class="col-sm-3" >
-                                        <input type="text" value="" class="slider form-control" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="yellow">
+                                        <input type="text" value="" id="score_value" class="slider form-control" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="yellow">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="button" id="score_btn" class="btn btn-block btn-primary btn-sm">打分</button>
                                     </div>
                                 </div>
-                             </div>
+                             </div>{% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -362,7 +383,6 @@
             page=1;
             //点击非推荐时button的文本显示为更多
             $("#recommend_button").text("更多");
-            //console.log($(e.target).attr('movie_type'));
             //设置所有的class为''(都不是激活状态)
             $("#nav_ul").find('li').each(function(){
                 $(this).attr('class','');
@@ -395,7 +415,6 @@
 
             recommend_movies(page);
         });
-
         $('#loginModal').modal('hide');
         $('#registerModal').modal('hide');
         //点击登录按钮
@@ -411,7 +430,6 @@
                 alert('密码不能为空');
                 return;
             } else {
-                console.log("123");
                 $.ajax({
                     url: '../user/login',
                     type: 'post',
@@ -429,7 +447,6 @@
                     }
                 });
             }
-
         });
         //点击注册按钮
         $("#sub_reg").click(function(){
@@ -462,7 +479,6 @@
                 alert("邮件地址格式不正确");
                 return;
             }
-
             $.ajax({
                 url:'../user/register',
                 data:{
@@ -499,7 +515,6 @@
             current_movie_type='';
             page=1;
             find_text = $("#find_text").val().trim();
-
             if(find_text==''){
                 return;
             }else{
@@ -507,7 +522,7 @@
                 $("#nav_ul").find('li').each(function(){
                     $(this).attr('class','');
                 });
-                $(".panel-title").text(find_text);
+                $("#table_title").text(find_text);
                 get_movie_list(find_text);
             }
         });
@@ -525,6 +540,37 @@
                     }
                 }
             });
+        });
+
+
+        $("#score_btn").click(function(){
+            //判断用户是否登录，没有登录提示登录
+            if ($("#loginuser").text()=='') {
+                layer.msg("对不起，您还没有登录", {
+                    icon: 2,
+                    time: 1500
+                });
+                return;
+            }else{
+                $.ajax({
+                    url:'../log/score',
+                    method:"post",
+                    data:{
+                        'userId':$("#loginuser").text(),
+                        'score':$("#score_value").val(),
+                        'movieId':$("#detail_id").text(),
+                    },
+                    success:function (msg) {
+                        var msg = JSON.parse(msg);
+                        if (msg.code == '0000') {
+                            layer.msg(msg.info, {
+                                icon : 1,
+                                time : 1500
+                            });
+                        }
+                    }
+                });
+            }
         });
     });
 
@@ -551,12 +597,27 @@
                         a.append(msg.data[i]['fields']['title']);
                         a.attr("movie_id",msg.data[i]['pk']);
                         a.attr("movie_title",msg.data[i]['fields']['title']);
+                        a.attr("movie_genres",msg.data[i]['fields']['genres']);
+                        a.attr("movie_year",msg.data[i]['fields']['year']);
+                        a.attr("movie_desc",msg.data[i]['fields']['m_desc']);
                         a.click(function(){
                             var movie_id = $(this).attr("movie_id");
                             var movie_title = $(this).attr("movie_title");
                             $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
-                            console.log(movie_id);
                             $("#video_src").attr("src","https://movielens.org/movies/1");
+                            $("#detail_id").text(movie_id);
+                            $("#detail_name").text(movie_title);
+                            $("#detail_year").text($(this).attr("movie_year"));
+                            var genres = $(this).attr("movie_genres");
+                            var genress = genres.split("|");
+                            $("#detail_genres").html('');
+                            for(var i=0;i<genress.length;i++){
+                                if(i>0&&i%3==0){
+                                     $("#detail_genres").append("<br>");
+                                 }
+                                 $("#detail_genres").append("<span class='label label-info' style='margin-left:3px'>"+genress[i]+"</span>");
+                            }
+                            $("#detail_desc").text($(this).attr("movie_desc"));
                         });
                         td.append(a);
                         tr.append(td);
@@ -596,12 +657,28 @@
                          a.append(msg.data[i]['fields']['title']);
                          a.attr("movie_id",msg.data[i]['pk']);
                          a.attr("movie_title",msg.data[i]['fields']['title']);
-                         a.click(function(){
+                         a.attr("movie_genres", msg.data[i]['fields']['genres']);
+                         a.attr("movie_year", msg.data[i]['fields']['year']);
+                         a.attr("movie_desc", msg.data[i]['fields']['m_desc']);
+                         a.click(function () {
                              var movie_id = $(this).attr("movie_id");
                              var movie_title = $(this).attr("movie_title");
-                             $("#movie_title").html("<i class='fa fa-sliders'></i>"+movie_title);
-                             console.log(movie_id);
-                             $("#video_src").attr("src","https://movielens.org/movies/1");
+                             $("#movie_title").html("<i class='fa fa-sliders'></i>" + movie_title);
+                             $("#video_src").attr("src", "https://movielens.org/movies/1");
+                              $("#detail_id").text(movie_id);
+                             $("#detail_name").text(movie_title);
+                             $("#detail_year").text($(this).attr("movie_year"));
+                             var genres = $(this).attr("movie_genres");
+                             var genress = genres.split("|");
+                             $("#detail_genres").html('');
+                            for(var i=0;i<genress.length;i++){
+                                if(i>0&&i%3==0){
+                                     $("#detail_genres").append("<br>");
+                                 }
+                                 $("#detail_genres").append("<span class='label label-info' style='margin-left:3px;'>"+genress[i]+"</span>");
+                            }
+                            $("#detail_desc").text($(this).attr("movie_desc"));
+
                          });
                          td.append(a);
                          tr.append(td);

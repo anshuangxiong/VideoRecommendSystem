@@ -125,9 +125,13 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        {% comment %}<div class="box-header">
-              <h3 class="box-title">Hover Data Table</h3>
-            </div>{% endcomment %}
+                        <div class="box-header" >
+                            <div id="toolbar"   class="btn-group">
+                                <button id="btn_add" type="button" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                                </button>
+                            </div>
+                        </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="video_user_table" class="table table-bordered table-hover">
@@ -146,11 +150,125 @@
         <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
         reserved.
     </footer>
-
-
     <div class="control-sidebar-bg"></div>
 </div>
-<!-- ./wrapper -->
+
+<!-- 修改视频弹框 -->
+<div class="modal fade" id="updateVideo" tabindex="-1" role="dialog"
+     aria-labelledby="updateVideoLabel">
+    <div class="modal-dialog" role="document" style="width: 650px">
+        <div class="modal-content">
+            <div class="panel panel-default" style="margin-bottom: 0px;">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div class="panel-heading">修改视频</div>
+                <div class="panel-body container-fluid">
+                    <div class="row">
+                        <input type="hidden" name="utxt_id" class="form-control"
+                               id="utxt_id" placeholder="编号">
+                        <div class="col-md-6">
+                            <label for="txt_name" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">视频名称:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_name" class="form-control"
+                                               id="utxt_name" placeholder="视频名称">
+									</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txt_year" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">年份:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_year" class="form-control"
+                                               id="utxt_year" placeholder="年份">
+									</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_genres" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">类别:</label> <span class="col-sm-10">
+										<textarea id="utxt_genres" class="form-control" rows="3"></textarea>
+                            </select>
+									</span>
+                        </div>
+
+                    </div>
+
+                    <div class="row"
+                         style="float: right; margin-right: 0px; margin-top: 13px;">
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm"
+                                    data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                            </button>
+                            <button type="button" id="btn_update_submit"
+                                    class="btn btn-primary btn-sm" data-dismiss="modal">
+										<span class="glyphicon glyphicon-floppy-disk"
+                                              aria-hidden="true"></span>修改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增视频窗口-->
+<div class="modal fade" id="addVideo" tabindex="-1" role="dialog"
+     aria-labelledby="addVideoLabel">
+    <div class="modal-dialog" role="document" style="width: 650px">
+        <div class="modal-content">
+            <div class="panel panel-default" style="margin-bottom: 0px;">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div class="panel-heading">新增视频</div>
+                <div class="panel-body container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="txt_name" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">视频名称:</label> <span class="col-sm-8">
+										<input type="text" class="form-control" id="txt_name">
+									</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txt_year" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">年份:</label> <span class="col-sm-8">
+										<input type="text" class="form-control" id="txt_year">
+									</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_genres" class="col-sm-2 control-label" style="margin-top: 6px;">类别:</label>
+                            <span class="col-sm-10">
+                                <textarea id="txt_genres" class="form-control" rows="3"></textarea>
+							</span>
+                        </div>
+
+                    </div>
+
+                    <div class="row"
+                         style="float: right; margin-right: 0px; margin-top: 13px;">
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm"
+                                    data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                            </button>
+                            <button type="button" id="btn_add_submit"
+                                    class="btn btn-primary btn-sm" data-dismiss="modal">
+										<span class="glyphicon glyphicon-floppy-disk"
+                                              aria-hidden="true"></span>保存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="../static/user/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../static/user/bootstrap/js/bootstrap.min.js"></script>
@@ -165,6 +283,16 @@
 
     $(function () {
         TableInit("../administrator/videoList");
+
+        //新增按钮点击事件
+        $("#btn_add").on("click", function () {
+            $('#addVideoLabel').text("新增视频信息");
+            $('#addVideo').modal({
+                //点击ESC键,模态窗口即会退出。
+                keyboard: true
+            });
+        });
+
     });
 
     $("#video_manager").click(function () {
@@ -279,6 +407,7 @@
         //先销毁表格
         $("#video_user_table").bootstrapTable('destroy');
         if (url == "../administrator/videoList") {
+            $("#toolbar").show();
             commom_attr['columns'] = [{
                 title: '序号',
                 field: 'id',
@@ -303,11 +432,12 @@
                 title: '操作',
                 field: 'operate',
                 align: 'center',
-                //events : operateEvents,
+                events : operateEvents,
                 formatter: genderOpt
             }];
             $("#video_user_table").bootstrapTable(commom_attr);
         } else {
+            $("#toolbar").hide();
             commom_attr['columns'] = [{
                 title: '序号',
                 field: 'id',
@@ -325,10 +455,10 @@
                 valign: 'middle'
             }, {
                 title: '操作',
-                field: 'operate',
+                field: 'state',
                 align: 'center',
-                //events : operateEvents,
-                formatter: genderOpt
+                events : operateEvents,
+                formatter: genderUserOpt
             }];
             $("#video_user_table").bootstrapTable(commom_attr);
         }
@@ -341,6 +471,184 @@
             '<i class="glyphicon glyphicon-pencil"></i>', '</a>  ',
             '<a id="remove" href="javascript:void(0)" title="删除">',
             '<i class="glyphicon glyphicon-trash"></i>', '</a>'].join('');
+    }
+
+    //自定义列内容
+    function genderUserOpt(value) {
+        if(value==1){
+            return '<button type="button" id="stop_btn" class="btn  btn-danger btn-sm">禁用</button>'
+        }else{
+             return '<button type="button" id="start_btn" class="btn  btn-success btn-sm">启用</button>'
+        }
+    }
+    //自定义列内容事件
+    window.operateEvents = {
+        'click #edit': function (e, value, row, index) {
+            editData(row);
+        },
+        'click #remove': function (e, value, row, index) {
+            delOneData(row.id);
+        },
+        'click #stop_btn': function (e, value, row, index) {
+            userManager(row.id,0);
+        },
+        'click #start_btn': function (e, value, row, index) {
+            userManager(row.id,1);
+        }
+    };
+
+    function userManager(id, state) {
+        $.ajax({
+            url: '../administrator/userState',
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                id: id,
+                state: state,
+            },
+            //阻止深度序列化，向后台传送数组
+            traditional: true,
+            success: function (msg) {
+                var msg = JSON.parse(msg);
+                if (msg.code == '0000') {
+                    layer.msg(msg.info, {icon: 1, time: 1500, area: ['60px', '66px']});
+                } else {
+                    layer.msg(msg.info, {icon: 2, time: 1500});
+                }
+                refresh();
+            }
+        });
+    }
+
+    //行末-编辑按钮点击事件
+    function editData(row) {
+        //向模态框中传值
+        $('#utxt_id').val(row.id);
+        $('#utxt_name').val(row.movie_title);
+        $('#utxt_year').val(row.year);
+        $('#utxt_genres').val(row.genres);
+
+        $('#updateVideoLabel').text("修改视频信息");
+
+        //显示模态窗口
+        $('#updateVideo').modal({
+            //点击ESC键,模态窗口即会退出。
+            keyboard: true
+        });
+    }
+
+    //弹框中-修改保存按钮点击事件
+    $("#btn_update_submit").off().on('click', function () {
+
+        var id = $('#utxt_id').val(),
+            name = $('#utxt_name').val(),
+            year = $('#utxt_year').val(),
+            genres = $('#utxt_genres').val();
+
+        //验证数据
+        if (!name) {
+            layer.msg('请填写视频名称!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!year) {
+            layer.msg('请填写视频年份!', {icon: 2, time: 1500});
+            return false;
+        }
+
+        $.ajax({
+            url: '../administrator/updateVideo',
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                id: id,
+                name: name,
+                year: year,
+                genres: genres
+            },
+            //阻止深度序列化，向后台传送数组
+            traditional: true,
+            success: function (msg) {
+                var msg = JSON.parse(msg);
+                if (msg.code == '0000') {
+                    layer.msg(msg.info, {icon: 1, time: 1500, area: ['60px', '66px']});
+                } else {
+                    layer.msg(msg.info, {icon: 2, time: 1500});
+                }
+                refresh();
+            }
+        })
+    });
+
+
+    //弹框保存按钮点击事件
+    $("#btn_add_submit").off().on('click', function () {
+
+        var name = $('#txt_name').val(),
+            year = $('#txt_year').val(),
+            genres = $('#txt_genres').val();
+
+        //验证数据
+        if (!name) {
+            layer.msg('请填写视频名称!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!year) {
+            layer.msg('请填写视频年份!', {icon: 2, time: 1500});
+            return false;
+        }
+
+        $.ajax({
+            url: '../administrator/addVideo',
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                name: name,
+                year: year,
+                genres: genres
+            },
+            //阻止深度序列化，向后台传送数组
+            traditional: true,
+            success: function (msg) {
+                var msg = JSON.parse(msg);
+                if (msg.code == '0000') {
+                    layer.msg(msg.info, {icon: 1, time: 1500, area: ['60px', '66px']});
+                } else {
+                    layer.msg(msg.info, {icon: 2, time: 1500});
+                }
+                refresh();
+            }
+        })
+    });
+
+    //行末-删除按钮点击事件
+    function delOneData(id) {
+        layer.confirm('确定要删除电影编号为' + id + '数据?', {icon: 3, title: '提示'}, function () {
+            $.ajax({
+                url: '../administrator/removeVideo',
+                data: {
+                    id: id,
+                },
+                method: 'post',
+                contentType: "application/x-www-form-urlencoded",
+                //阻止深度序列化，向后台传送数组
+                traditional: true,
+                success: function (msg) {
+                    var msg = JSON.parse(msg);
+                    if (msg.code == '0000') {
+                        layer.msg(msg.info, {icon: 1, time: 1500, area: ['60px', '66px']});
+                        refresh();
+                    } else {
+                        layer.msg(msg.info, {icon: 2, time: 1500, area: ['60px', '66px']});
+                    }
+                }
+            })
+        });
+    }
+
+
+    //刷新页面
+    function refresh() {
+       $("#video_user_table").bootstrapTable('refresh');
     }
 
 </script>

@@ -62,6 +62,7 @@ class Sysusers(models.Model):
     password = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
     hobby = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False

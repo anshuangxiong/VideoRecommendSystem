@@ -7,4 +7,4 @@ python manage.py makemigrations
 
 userId,movieId,rating,timestamp
 
-ython manage.py inspectdb MOVIES LINKS RATINGS TAGS SYSUSERS > apps/user/models.py
+python manage.py inspectdb MOVIES LINKS RATINGS TAGS SYSUSERS > apps/user/models.py

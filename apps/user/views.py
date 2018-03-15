@@ -55,7 +55,7 @@ def user_login(request):
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
 
-    users=Sysusers.objects.filter(user_name=username,password=pwd)
+    users=Sysusers.objects.filter(user_name=username,password=pwd,state=1)
     # 先序列化
     users = serializers.serialize('json', users)
     # 转换为字典类型

@@ -19,5 +19,10 @@ app_name='[administrator]'
 urlpatterns = [
     url(r'^videoList', views.videoList, name='videoList'),
     url(r'^userList', views.userList, name='userList'),
+    url(r'^removeVideo', views.removeVideo, name='removeVideo'),
+    url(r'^updateVideo', views.updateVideo, name='updateVideo'),
+    url(r'^userState', views.userState, name='userState'),
+    url(r'^addVideo', views.addVideo, name='addVideo'),
+
 
 ]

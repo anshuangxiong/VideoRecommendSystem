@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from user.models import Movies
+from user.models import Sysusers
 from recommend.models import Xsjz
+from recommend.models import Recommend
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import Ratings
@@ -12,6 +14,8 @@ from collections import defaultdict
 import math
 import operator
 import time
+import datetime
+
 # Create your views here.
 logger = logging.getLogger(__name__)
 
@@ -20,26 +24,36 @@ logger = logging.getLogger(__name__)
 def recommend_best_score(request):
     try:
         user = request.session["user"]
-        print("用户登录："+user['fields']['user_name']+"  userID:  "+str(user['pk']))
+        print("登录用户："+user['fields']['user_name']+"  userID:  "+str(user['pk']))
         # user2item_matrix, item2user_matrix = get_data()
         # W = user_sim_cosine(user2item_matrix)
         # rank_list = recommend_userCF(user2item_matrix, str(user['pk']), W, int(9999))
         page = request.POST.get('page')
-        rank_list = recommend_userCF2( str(user['pk']),page,  int(10))
-        movie_ids=[]
-        for i in range(len(rank_list)):
-            movie_ids.append(int(rank_list[i][0]))
-        movies = Movies.objects.filter(movie_id__in=movie_ids)
-        paginator = Paginator(movies, 10)  # Show 10 contacts per page
-        page = request.POST.get('page')
-        try:
-            contacts = paginator.page(page)
-        except PageNotAnInteger:
-            contacts = paginator.page(1)
-        except EmptyPage:
-            contacts = paginator.page(paginator.num_pages)
-        movies = serializers.serialize("json", contacts)
+        # rank_list = recommend_userCF2( str(user['pk']),page,  int(10))
+        K=10
+        page=int(page)
+        # recommends = Recommend.objects.filter(user_id=int(user['pk'])).order_by('recommend_score').reverse()[(page-1)*K:page*K]
+        # movie_ids=[]
+        # for recommend in recommends:
+        #     movie_ids.append(recommend.movie_id)
+        # for i in range(len(rank_list)):
+        #     movie_ids.append(int(rank_list[i][0]))
+        # movies = Movies.objects.filter(movie_id__in=movie_ids)
+        print("推荐开始   " + str(datetime.datetime.now()))
+        movies = Movies.objects.raw(
+            'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id=1 order by r.recommend_score desc')[(page-1)*K:page*K]
+        print("推荐结束   " + str(datetime.datetime.now()))
+        # paginator = Paginator(movies, 10)  # Show 10 contacts per page
+        # page = request.POST.get('page')
+        # try:
+        #     contacts = paginator.page(page)
+        # except PageNotAnInteger:
+        #     contacts = paginator.page(1)
+        # except EmptyPage:
+        #     contacts = paginator.page(paginator.num_pages)
+        movies = serializers.serialize("json", movies)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
+        # recommend_userCF3()
         return JsonResponse(json_data, safe=False, content_type='application/json')
     except KeyError as e:
         logger.error("当前没有用户登录")
@@ -109,6 +123,7 @@ def recommend_userCF(user2item_matrix, user_id, W, K=10):
     print("开始推荐")
     rank=defaultdict(int)
     # 获取用户的物品列表
+
     user_item_set = user2item_matrix[user_id].keys()
     # 遍历与该user_id相似的用户和相似度得分
     for w_userid,w_score in sorted(W[user_id].items(),key=operator.itemgetter(1),reverse=True)[0:K]:
@@ -119,29 +134,41 @@ def recommend_userCF(user2item_matrix, user_id, W, K=10):
                 continue
             # 计算该物品推荐给用户的排序分  用户的相似度*评分
             rank[item_id] = w_score*item_score
+
     # 对所有推荐物品与打分按照排序分进行降序排序，取前K个物品
     rank_list = sorted(rank.items(),key=operator.itemgetter(1),reverse=True)[0:K]
     print("推荐结束")
     return rank_list
 
 
-def recommend_userCF2( user_id,page ,K=10):
+def recommend_userCF2(user_id, page, K=10):
+    user_id = 2
     page = int(page)
-    print("推荐开始   " + str(time.time()))
+    print("推荐开始   " + str(datetime.datetime.now()))
     rank = defaultdict(int)
+    # 获取用户观看过的视频
     user_items = Ratings.objects.filter(user_id=user_id)
-    movie_ids=[]
+    movie_ids=[] # 所有看过的视频id 组成的list
     for user_item in user_items:
         movie_ids.append(user_item.movie_id)
-    xsjzs = Xsjz.objects.filter(r=int(user_id)).order_by('v').reverse()[(page-1)*10:page*K]
+    # 该用户和其他用户之间的相似度  按相似度从大到小排序 取出第page页
+    xsjzs = Xsjz.objects.filter(r=int(user_id)).exclude(v=0).order_by('v').reverse()#[(page-1)*10:page*K]
+    print(len(xsjzs))
+    commend = open("recommend.txt",'w')
     for xsjz in xsjzs:
-        items = Ratings.objects.filter(user_id=xsjz.c).order_by('rating').reverse()[(page-1)*10:page*K]
+        # 获取相似用户看过的视频  按评分从大到小排序
+        items = Ratings.objects.filter(user_id=xsjz.c).order_by('rating').reverse()#[(page-1)*10:page*K]
         for item in items:
+            # 判断相似用户看过的视频该用户已经看过 若看过 不推荐 没有看过  计算推荐度(用户之间的相似度*相似用户对该电影的评分)
             if item.movie_id in movie_ids:
                 continue
-            rank[item.movie_id] = xsjz.v * item.rating
-    rank_list = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)[0:K]
-    print("推荐结束  " + str(time.time()))
+            tmp = xsjz.v * item.rating
+            if tmp > rank[item.movie_id]:
+                rank[item.movie_id] = tmp
+    print(len(rank))
+    # 对推荐度进行从大到小排序 取出前K个返回
+    rank_list = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)[(page-1)*10:page*K]#[0:K]
+    print("推荐结束  " + str(datetime.datetime.now()))
     return rank_list
 
 
@@ -163,3 +190,39 @@ def recommend_ItemCF(user2item_matrix, user_id, W, K=10):
     # 对所有推荐物品与打分按照排序分进行降序排序，取前K个物品
     rank_list = sorted(rank.items(),key=operator.itemgetter(1),reverse=True)[0:K]
     return rank_list
+
+
+
+
+def recommend_userCF3():
+    print("推荐开始   " + str(datetime.datetime.now()))
+    # for i in range(671):
+    #     print(i)
+    #     Sysusers.objects.create(user_id=i+1,user_name='test'+str(i+1),password='123456',email='13821752883@163.com',state=1)
+    users = Sysusers.objects.all().order_by('user_id')
+    for user in users:
+        #获取用户观看过的视频
+        user_items = Ratings.objects.filter(user_id=user.user_id)
+        movie_ids=[] # 所有看过的视频id 组成的list
+        for user_item in user_items:
+            movie_ids.append(user_item.movie_id)
+        # 该用户和其他用户之间的相似度  按相似度从大到小排序
+        xsjzs = Xsjz.objects.filter(r=int(user.user_id)).exclude(v=0).order_by('v').reverse()
+        rank = defaultdict(int)
+        for xsjz in xsjzs:
+            # 获取相似用户看过的视频  按评分从大到小排序
+            items = Ratings.objects.filter(user_id=xsjz.c).order_by('rating').reverse()
+            for item in items:
+                # 判断相似用户看过的视频该用户已经看过 若看过 不推荐 没有看过  计算推荐度(用户之间的相似度*相似用户对该电影的评分)
+                if item.movie_id in movie_ids:
+                    continue
+                tmp = xsjz.v * item.rating
+                if tmp > rank[item.movie_id]:
+                    rank[item.movie_id] = tmp
+        for i in rank.keys():
+            # print(str(user.user_id)+"  "+str(i)+"  :  "+str(rank[i]))
+            Recommend.objects.create(user_id=user.user_id,movie_id=i,recommend_score=rank[i])
+    print("推荐结束  " + str(datetime.datetime.now()))
+
+
+

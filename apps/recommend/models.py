@@ -17,5 +17,16 @@ class Xsjz(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'xsjz'
+        db_table = 'XSJZ'
         unique_together = (('r', 'c'),)
+
+
+class Recommend(models.Model):
+    user_id = models.FloatField(primary_key=True)
+    movie_id = models.FloatField()
+    recommend_score = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'RECOMMEND'
+        unique_together = (('user_id', 'movie_id'),)

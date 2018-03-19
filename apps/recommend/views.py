@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from user.models import Movies
 from user.models import Sysusers
+from log.models import Movie80
 from recommend.models import Xsjz
 from recommend.models import Recommend
 from django.core import serializers
@@ -32,6 +33,7 @@ def recommend_best_score(request):
         # rank_list = recommend_userCF2( str(user['pk']),page,  int(10))
         K=10
         page=int(page)
+        userId = str(user['pk'])
         # recommends = Recommend.objects.filter(user_id=int(user['pk'])).order_by('recommend_score').reverse()[(page-1)*K:page*K]
         # movie_ids=[]
         # for recommend in recommends:
@@ -41,7 +43,7 @@ def recommend_best_score(request):
         # movies = Movies.objects.filter(movie_id__in=movie_ids)
         print("推荐开始   " + str(datetime.datetime.now()))
         movies = Movies.objects.raw(
-            'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id=1 order by r.recommend_score desc')[(page-1)*K:page*K]
+            'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id='+userId+' order by r.recommend_score desc')[(page-1)*K:page*K]
         print("推荐结束   " + str(datetime.datetime.now()))
         # paginator = Paginator(movies, 10)  # Show 10 contacts per page
         # page = request.POST.get('page')
@@ -54,6 +56,7 @@ def recommend_best_score(request):
         movies = serializers.serialize("json", movies)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
         # recommend_userCF3()
+        grapdata()
         return JsonResponse(json_data, safe=False, content_type='application/json')
     except KeyError as e:
         logger.error("当前没有用户登录")
@@ -225,4 +228,83 @@ def recommend_userCF3():
     print("推荐结束  " + str(datetime.datetime.now()))
 
 
+import requests
+from bs4 import BeautifulSoup
+import urllib
+def grapdata():
+    start=1028
+    for i in range(1000):
+        html = requests.get("http://www.80s.tw/movie/"+str((i+start)),verify=False)
+        print(str((i+start)))
+        soup = BeautifulSoup(html.text,'lxml')
+        for mv in soup.select('.img') :#find_all('div',{'class','img'}):
+            src="http:"+mv.find_all('img')[0].attrs['src']
+            urllib.request.urlretrieve(src, "data/"+str(i+start)+mv.find_all('img')[0].attrs['title']+'.jpg')
 
+        mname=""
+        mname2=""
+        mactor=""
+        mintroduce=""
+        mscore=""
+        mupdatedate=""
+        mlength=""
+        mstartdate=""
+        mdirector=""
+        mlanguage=""
+        marea=""
+        mtype=""
+        for mv in soup.find_all('div',{'class','info'}):
+            mname=mv.find_all('h1')[0].get_text()
+            #print(mname)
+            for sp in mv.find_all('span',{'class','font_888'}):
+                if sp.get_text()=="又名：":
+                    mname2=str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("又名：","")
+                    #print(mname2)
+                if sp.get_text() == "演员：":
+                    actor=""
+                    for children in sp.parent.find_all('a'):
+                        actor = actor+"|"+str(children.get_text());
+                    mactor=actor
+                    #print(mactor)
+                if sp.get_text() == "类型：":
+                    type=""
+                    for children in sp.parent.find_all('a'):
+                        type = type+" "+str(children.get_text());
+                    mtype = type
+                    #print(mtype)
+                if sp.get_text() == "地区：":
+                    area=""
+                    for children in sp.parent.find_all('a'):
+                        area = area+" "+str(children.get_text());
+                    marea = area
+                    #print(marea)
+                if sp.get_text() == "语言：":
+                    language=""
+                    for children in sp.parent.find_all('a'):
+                        language = language+" "+str(children.get_text());
+                    mlanguage = language
+                    #print(mlanguage)
+                if sp.get_text() == "导演：":
+                    dao=""
+                    for children in sp.parent.find_all('a'):
+                        dao = dao+" "+str(children.get_text());
+                    mdirector = dao
+                    #print(mdirector)
+                if sp.get_text()=="上映日期：":
+                    mstartdate = str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("上映日期：","")
+                    #print(mstartdate)
+                if sp.get_text()=="片长：":
+                    mlength = str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("片长：","")
+                    #print(mlength)
+                if sp.get_text()=="更新日期：":
+                    mupdatedate = str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("更新日期：","")
+                    #print(mupdatedate)
+                if sp.get_text()=="豆瓣评分：":
+                    mscore = str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("豆瓣评分：","")
+                    #print(mscore)
+                if sp.get_text()=="剧情介绍：":
+                    mintroduce = str(sp.parent.get_text()).replace("\n","").replace(" ","").replace("剧情介绍：","")
+                    #print(mintroduce)
+        Movie80.objects.create(mid=str((i+start)),mname=mname,mname2=mname2,mactor=mactor,mtype=mtype,marea=marea,
+                               mlanguage=mlanguage,mdirector=mdirector,mstartdate=mstartdate,mlength=mlength,
+                               mupdatedate=mupdatedate,mscore=mscore,mintroduce=mintroduce)

@@ -13,10 +13,12 @@ from django.db import models
 class Movies(models.Model):
     movie_id = models.FloatField(primary_key=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    genres = models.CharField(max_length=255, blank=True, null=True)
     year = models.CharField(max_length=5, blank=True, null=True)
+    genres = models.CharField(max_length=255, blank=True, null=True)
     genres_en = models.CharField(max_length=255, blank=True, null=True)
     m_desc = models.TextField(blank=True, null=True)
+    title_en = models.CharField(max_length=255, blank=True, null=True)
+    movie_80_id = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -25,7 +27,7 @@ class Movies(models.Model):
 
 class Links(models.Model):
     movie_id = models.FloatField(primary_key=True)
-    imdb_id = models.FloatField(blank=True, null=True)
+    imbd_id = models.FloatField(blank=True, null=True)
     tmdb_id = models.FloatField(blank=True, null=True)
 
     class Meta:
@@ -38,6 +40,7 @@ class Ratings(models.Model):
     movie_id = models.FloatField()
     rating = models.FloatField(blank=True, null=True)
     timestamp = models.CharField(max_length=100, blank=True, null=True)
+    isupdate = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False

@@ -621,6 +621,7 @@
                     success:function (msg) {
                         var msg = JSON.parse(msg);
                         if (msg.code == '0000') {
+                            page=1;
                             layer.msg(msg.info, {
                                 icon : 1,
                                 time : 1500

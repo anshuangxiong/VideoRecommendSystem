@@ -85,7 +85,8 @@ def user_register(request):
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
     email = request.POST.get('email')
-    if username == '' or pwd == '' or email == '':
+    hobby = request.POST.get('hobby')
+    if username == '' or pwd == '' or email == '' or hobby == '':
         json_data = json.dumps({'code': '0002', 'info': '参数不能为空', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     users = Sysusers.objects.filter(user_name=username)
@@ -95,7 +96,7 @@ def user_register(request):
     with connection.cursor() as cursor:
         cursor.execute("select VIDEO_USER_SEQ.nextval from dual")
         row = cursor.fetchone()
-    Sysusers.objects.create(user_id=int(row[0]),user_name=str(username),password=str(pwd),email=email)
+    Sysusers.objects.create(user_id=int(row[0]),user_name=str(username),password=str(pwd),email=email,hobby=hobby,state=1)
     register_data = {'username': username}
     json_data = json.dumps({'code': '0000', 'info': '注册成功', 'data': register_data})
     return JsonResponse(json_data, safe=False, content_type='application/json')

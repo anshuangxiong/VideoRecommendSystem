@@ -37,7 +37,7 @@ def userList(request):
     sysusers = Sysusers.objects.all().order_by('user_id')
     lists = []
     for user in sysusers:
-        user_json = {"id": user.user_id, 'username': user.user_name, 'email': user.email,'state':user.state}
+        user_json = {"id": user.user_id, 'username': user.user_name, 'email': user.email,'state':user.state,'hobby':user.hobby}
         lists.append(user_json)
     return JsonResponse(lists, safe=False, content_type='application/json')
 

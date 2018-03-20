@@ -31,10 +31,13 @@ def recommend_best_score(request):
         K=10
         page=int(page)
         userId = str(user['pk'])
-        print("推荐开始   " + str(datetime.datetime.now()))
+        print("按推荐算法开始推荐   " + str(datetime.datetime.now()))
         movies = Movies.objects.raw(
             'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id='+userId+' order by r.recommend_score desc')[(page-1)*K:page*K]
-        print("推荐结束   " + str(datetime.datetime.now()))
+        print("按推荐算法推荐结束   " + str(datetime.datetime.now()))
+        print(len(movies))
+        if len(movies)==0:
+            movies = recommend_by_user_hobby(user['pk'],page,K)
         movies = serializers.serialize("json", movies)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
         # update_recommend_list2(104)
@@ -57,6 +60,26 @@ def recommend_best_score(request):
         lists = serializers.serialize("json", contacts)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': lists})
         return JsonResponse(json_data,  safe=False, content_type='application/json')
+
+
+
+def recommend_by_user_hobby(userId,page,K):
+    print("按用户爱好开始推荐   " + str(datetime.datetime.now()))
+    user = Sysusers.objects.get(user_id=userId)
+    hobbys = user.hobby.split(',')
+    sql = ""
+    param = []
+    for hobby in hobbys:
+        tmp = "%"+hobby+"%"
+        param.append(tmp)
+        if sql=="":
+            sql =sql+  "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,t.title_en,t.movie_80_id,to_char(t.m_desc) from MOVIES t where t.genres_en like %s";
+        else:
+            sql= sql+ " union "+ "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,t.title_en,t.movie_80_id,to_char(t.m_desc) from MOVIES t where t.genres_en like %s";
+    print(sql)
+    movies = Movies.objects.raw(sql,param)[(page-1)*K:page*K]
+    print("按用户爱好推荐结束   " + str(datetime.datetime.now()))
+    return movies
 ########################################################################################
 
 

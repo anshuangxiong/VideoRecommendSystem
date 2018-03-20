@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="../static/user/plugins/ionslider/ion.rangeSlider.css">
     <link rel="stylesheet" href="../static/user/plugins/ionslider/ion.rangeSlider.skinNice.css">
     <link rel="stylesheet" href="../static/user/plugins/bootstrap-slider/slider.css">
+    <link rel="stylesheet" href="../static/user/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="../static/user/plugins/colorpicker/bootstrap-colorpicker.min.css">
     <style>
         /*视频播放器*/
         .main-wrap {
@@ -44,13 +46,13 @@
                 <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                     <ul class="nav navbar-nav" id="nav_ul">
                         <li class="active"><a id="recommend">推荐<span class="sr-only">(current)</span></a></li>
-                        <li><a id="comedy" movie_type="Comedy">喜剧片</a></li>
-                        <li><a id="horror" movie_type="Horror">恐怖片</a></li>
-                        <li><a id="action" movie_type="Action">动作片</a></li>
-                        <li><a id="thriller" movie_type="Thriller">科幻片</a></li>
-                        <li><a id="adventure" movie_type="Adventure">冒险片</a></li>
+                        <li><a id="comedy" movie_type="Comedy">喜剧</a></li>
+                        <li><a id="horror" movie_type="Horror">恐怖</a></li>
+                        <li><a id="action" movie_type="Action">动作</a></li>
+                        <li><a id="thriller" movie_type="Thriller">科幻</a></li>
+                        <li><a id="adventure" movie_type="Adventure">冒险</a></li>
                         <li><a id="mystery" movie_type="Mystery">推理剧</a></li>
-                        <li><a id="children" movie_type="Children">动画片</a></li>
+                        <li><a id="children" movie_type="Children">动画</a></li>
                         <li><a id="romance" movie_type="Romance">浪漫</a></li>
                     </ul>
 
@@ -152,10 +154,10 @@
                                     <div class="col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+                                                {% comment %}<video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
                                             <source src="http://dl47.80s.im:920/1606/乱世佳人/乱世佳人.mp444"
                                                     type="video/mp4">
-                                            </video>
+                                            </video>{% endcomment %}
                                             </div>
 
                                         </div>
@@ -239,10 +241,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="hold-transition login-page">
+                    <div class="hold-transition1 login-page">
                         <div class="login-box">
                             <div class="login-logo">
-                                <a href="#"><b>LOGIN</b></a>
+                                <a href="#">登录</a>
                             </div>
                             <div class="login-box-body">
                                 <p class="login-box-msg">Sign in to start your session</p>
@@ -257,24 +259,19 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-8">
-                                            <div class="checkbox icheck">
-                                                <label>
-                                                    <input type="checkbox"> Remember Me
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <button type="button" id="sub_login" class="btn btn-primary btn-block btn-flat">Sign In
+                                            <button type="button" id="sub_login" class="btn btn-primary btn-block btn-flat">登录
                                             </button>
                                         </div>
+
                                     </div>
                                 </form>
-                                <div class="social-auth-links text-center">
-                                    <p>- OR -</p>
-                                    <a data-toggle="modal" data-target="#registerModal" onclick="login_modal_hide()" class="btn btn-block btn-social btn-facebook btn-flat"><i
-                                            class="glyphicon glyphicon-user"></i> 新用户注册</a>
+                                <div class="row" style="margin-top:20px">
+                                    <div class="col-xs-6 pull-left"><a href="#" class="pull-left">忘记密码</a></div>
+                                    <div class="col-xs-6 pull-right"><a href="#"  data-toggle="modal" data-target="#registerModal" onclick="login_modal_hide()" class="pull-right">新用户注册</a></div>
                                 </div>
-                                <a href="#">忘记密码</a><br>
+                            </div>
+                            <div class="login-logo">
+                                <a href="#"><b>&nbsp;</b></a>
                             </div>
                         </div>
                     </div>
@@ -296,12 +293,10 @@
                     <div class="hold-transition register-page">
                         <div class="register-box">
                             <div class="register-logo">
-                                <a href="../../index2.html"><b>新用户注册</b></a>
+                                <a href="#">新用户注册</a>
                             </div>
-
                             <div class="register-box-body">
-                                <p class="login-box-msg">Register a new membership</p>
-                                <form  >
+                                <form>
                                     <div class="form-group has-feedback">
                                         <input type="text" class="form-control" id="user_name" placeholder="Full name">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -315,34 +310,77 @@
                                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                                     </div>
                                     <div class="form-group has-feedback">
-                                        <input type="password" class="form-control" id="cpwd" placeholder="Retype password">
+                                        <input type="password" class="form-control" id="cpwd"
+                                               placeholder="Retype password">
                                         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
                                     </div>
                                     <div class="row">
-                                        <div class="col-xs-8">
-                                            <div class="checkbox icheck">
-                                                <label>
-                                                    <input type="checkbox"> I agree to the <a href="#">terms</a>
-                                                </label>
+                                        <div class="col-xs-12">
+                                            <div class="box-body">
+                                                <!-- checkbox -->
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" class="flat-red" value="喜剧片" checked>喜剧
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="恐怖片" class="flat-red">恐怖
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="动作片" class="flat-red">动作
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="科幻片" class="flat-red">科幻
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="冒险片" class="flat-red">冒险
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12"><label>
+                                                            <input type="checkbox" name="video_type" value="推理剧" class="flat-red">推理
+                                                        </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="动画片" class="flat-red">动画
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="浪漫剧"  class="flat-red">浪漫
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="奇幻剧" class="flat-red">奇幻
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" name="video_type" value="戏剧" class="flat-red">戏剧
+                                                            </label></div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <button type="button" id="sub_reg"
+                                                    class="btn btn-primary btn-block btn-flat">注册
+                                            </button>
                                         </div>
                                         <div class="col-xs-4">
-                                            <button type="button" id="sub_reg" class="btn btn-primary btn-block btn-flat">Register
+                                            <button type="button" data-toggle="modal" data-target="#loginModal" onclick="register_modal_hide()" class="btn btn-success btn-block btn-flat">去登陆
                                             </button>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">关闭</button>
                                         </div>
                                     </div>
                                 </form>
-                                <div class="social-auth-links text-center">
-                                    <p>- OR -</p>
-                                    <a data-toggle="modal" onclick="register_modal_hide()" data-target="#loginModal" class="btn btn-block btn-social btn-facebook btn-flat"><i
-                                            class="glyphicon glyphicon-log-in"></i> 我早已有一个用户</a>
-                                </div>
+                            </div>
+                            <div class="register-logo">
+                                <a href="#"><b>&nbsp;</b></a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -369,12 +407,25 @@
 <script src="../static/user/plugins/ionslider/ion.rangeSlider.min.js"></script>
 <!-- Bootstrap slider -->
 <script src="../static/user/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+
+<script src="../static/user/plugins/iCheck/icheck.min.js"></script>
 <script>
     var page=1;
     var current_movie_type="";
     var find_text="";
     $(function(){
         $('.slider').slider();
+
+        $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_flat-blue'
+    });
+
         recommend_movies(page);
         //给视频分类注册点击事件
         $("#comedy,#horror,#action,#thriller,#adventure,#mystery,#children,#romance,#war").click(function(e){
@@ -450,10 +501,12 @@
         });
         //点击注册按钮
         $("#sub_reg").click(function(){
+            var hobby = getVideoTypes();
             var username=$("#user_name").val();
             var pwd=$("#pwd").val();
             var cpwd=$("#cpwd").val();
             var email=$("#email").val();
+
             if(username == ''){
                 alert("用户名不能为空");
                 return;
@@ -479,12 +532,17 @@
                 alert("邮件地址格式不正确");
                 return;
             }
+            else if(hobby==''){
+                alert("请选择你喜欢的类型");
+                return;
+            }
             $.ajax({
                 url:'../user/register',
                 data:{
                     'username':username,
                     'pwd':pwd,
-                    'email':email
+                    'email':email,
+                    'hobby':hobby,
                 },
                 method:'post',
                 success:function(msg){
@@ -694,6 +752,21 @@
     }
     function register_modal_hide(){
         $('#registerModal').modal('hide');
+    }
+
+    function getVideoTypes(){
+        obj = document.getElementsByName("video_type");
+        check_val = "";
+        for(k in obj){
+            if(obj[k].checked){
+                if(check_val==""){
+                    check_val=check_val+obj[k].value;
+                }else{
+                    check_val=check_val+","+obj[k].value;
+                }
+            }
+        }
+        return check_val;
     }
 </script>
 </body>

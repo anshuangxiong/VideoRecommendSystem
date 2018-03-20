@@ -35,6 +35,8 @@ def insert_score(request):
         update_xsjz_and_recommendlist(userId)
         return JsonResponse(json_data,  safe=False, content_type='application/json')
 
+##########################################################################################
+
 
 def update_xsjz(userID):
     print("更新相似矩阵开始   " + str(datetime.datetime.now()))
@@ -69,6 +71,15 @@ def update_recommend_list(userID):
     for i in rank.keys():
         Recommend.objects.create(user_id=userID,movie_id=i,recommend_score=rank[i])
     print("更新推荐列表结束  " + str(datetime.datetime.now()))
+
+
+def update_recommend_list2(userID):
+    print(userID)
+    print("更新推荐列表开始   " + str(datetime.datetime.now()))
+    with connection.cursor() as cursor:
+        cursor.callproc('update_recommend_list', (userID,))  # 注意参数应该是一个元组
+        connection.connection.commit()  # 调用存储过程后，确定要进行commit执行
+    print("更新推荐列表结束   " + str(datetime.datetime.now()))
 
 
 def update_xsjz_and_recommendlist(userID):

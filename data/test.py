@@ -122,21 +122,19 @@ def grapdata():
 
 
 
-def grapimg():
-    for i in range(1):
-        start=1014
+def graplink():
+    for i in range(5):
+        start=19563
         html = requests.get("http://www.80s.tw/movie/"+str((i+start)),verify=False)
         print(str(i+start))
         soup = BeautifulSoup(html.text,'lxml')
-        for mv in soup.select('.img') :#find_all('div',{'class','img'}):
-            src="http:"+mv.find_all('img')[0].attrs['src']
-            urllib.request.urlretrieve(src, str(i+start)+mv.find_all('img')[0].attrs['title']+'.jpg')
-            #print(mv.find_all('img')[0].attrs['src'])
-            #print(mv.find_all('img')[0].attrs['title'])
+        for mv in soup.select('#downid_0') :
+            print(mv.attrs['value'])
+
 
 def grapdataandimg():
-    start=1115
-    for i in range(1):
+    start=592
+    for i in range(5):
         html = requests.get("http://www.80s.tw/movie/"+str((i+start)),verify=False)
         print(str((i+start)))
         soup = BeautifulSoup(html.text,'lxml')
@@ -155,6 +153,9 @@ def grapdataandimg():
         mlanguage=""
         marea=""
         mtype=""
+        mlink = ""
+        for mv in soup.select('#downid_0'):
+            mlink = mv.attrs['value']
         for mv in soup.find_all('div',{'class','info'}):
             mname=mv.find_all('h1')[0].get_text()
             #print(mname)
@@ -232,4 +233,4 @@ def grapdataandimg():
 
 
 if __name__ == "__main__":
-    grapdataandimg()
+    graplink()

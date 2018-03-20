@@ -11,6 +11,10 @@ python manage.py inspectdb MOVIES LINKS RATINGS TAGS SYSUSERS > apps/user/models
 
 python manage.py inspectdb XSJZ RECOMMEND > apps/recommend/models.py
 
+
+python manage.py inspectdb movie_80  > apps/log/models.py
+
+
 thunder://QUFodHRwOi8vZGwxNzQuODBzLmltOjkyMC8xODAzL+WJjeS7uzPvvJrlho3op4HliY3ku7sv5YmN5Lu7M++8muWGjeingeWJjeS7uy5tcDRaWg==
 
 

@@ -24,6 +24,7 @@ class Movie80(models.Model):
     mupdatedate = models.CharField(max_length=255, blank=True, null=True)
     mscore = models.CharField(max_length=255, blank=True, null=True)
     mintroduce = models.TextField(blank=True, null=True)
+    mlink = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False

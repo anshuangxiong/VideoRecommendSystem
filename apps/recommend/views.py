@@ -12,6 +12,7 @@ from user.models import Ratings
 import logging
 import json
 from collections import defaultdict
+from django.db import connection
 import math
 import operator
 import time
@@ -26,37 +27,19 @@ def recommend_best_score(request):
     try:
         user = request.session["user"]
         print("登录用户："+user['fields']['user_name']+"  userID:  "+str(user['pk']))
-        # user2item_matrix, item2user_matrix = get_data()
-        # W = user_sim_cosine(user2item_matrix)
-        # rank_list = recommend_userCF(user2item_matrix, str(user['pk']), W, int(9999))
         page = request.POST.get('page')
-        # rank_list = recommend_userCF2( str(user['pk']),page,  int(10))
         K=10
         page=int(page)
         userId = str(user['pk'])
-        # recommends = Recommend.objects.filter(user_id=int(user['pk'])).order_by('recommend_score').reverse()[(page-1)*K:page*K]
-        # movie_ids=[]
-        # for recommend in recommends:
-        #     movie_ids.append(recommend.movie_id)
-        # for i in range(len(rank_list)):
-        #     movie_ids.append(int(rank_list[i][0]))
-        # movies = Movies.objects.filter(movie_id__in=movie_ids)
         print("推荐开始   " + str(datetime.datetime.now()))
         movies = Movies.objects.raw(
             'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id='+userId+' order by r.recommend_score desc')[(page-1)*K:page*K]
         print("推荐结束   " + str(datetime.datetime.now()))
-        # paginator = Paginator(movies, 10)  # Show 10 contacts per page
-        # page = request.POST.get('page')
-        # try:
-        #     contacts = paginator.page(page)
-        # except PageNotAnInteger:
-        #     contacts = paginator.page(1)
-        # except EmptyPage:
-        #     contacts = paginator.page(paginator.num_pages)
         movies = serializers.serialize("json", movies)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
         # recommend_userCF3()
-        grapdata()
+        # grapdata()
+        # update_recommend_list2(104)
         return JsonResponse(json_data, safe=False, content_type='application/json')
     except KeyError as e:
         logger.error("当前没有用户登录")
@@ -308,3 +291,40 @@ def grapdata():
         Movie80.objects.create(mid=str((i+start)),mname=mname,mname2=mname2,mactor=mactor,mtype=mtype,marea=marea,
                                mlanguage=mlanguage,mdirector=mdirector,mstartdate=mstartdate,mlength=mlength,
                                mupdatedate=mupdatedate,mscore=mscore,mintroduce=mintroduce)
+
+
+def update_recommend_list(userID):
+    print(userID)
+    # 删除该用户的推荐列表
+    Recommend.objects.filter(user_id=userID).delete()
+    print("更新开始   " + str(datetime.datetime.now()))
+    #获取用户观看过的视频
+    user_items = Ratings.objects.filter(user_id=userID)
+    movie_ids=[] # 所有看过的视频id 组成的list
+    for user_item in user_items:
+        movie_ids.append(user_item.movie_id)
+    # 该用户和其他用户之间的相似度  按相似度从大到小排序
+    xsjzs = Xsjz.objects.filter(r=int(userID)).exclude(v=0).order_by('v').reverse()
+    rank = defaultdict(int)
+    for xsjz in xsjzs:
+        # 获取相似用户看过的视频  按评分从大到小排序
+        items = Ratings.objects.filter(user_id=xsjz.c).order_by('rating').reverse()
+        for item in items:
+            # 判断相似用户看过的视频该用户已经看过 若看过 不推荐 没有看过  计算推荐度(用户之间的相似度*相似用户对该电影的评分)
+            if item.movie_id in movie_ids:
+                continue
+            tmp = xsjz.v * item.rating
+            if tmp > rank[item.movie_id]:
+                rank[item.movie_id] = tmp
+    for i in rank.keys():
+        Recommend.objects.create(user_id=userID,movie_id=i,recommend_score=rank[i])
+    print("更新结束  " + str(datetime.datetime.now()))
+
+
+def update_recommend_list2(userID):
+    print(userID)
+    print("更新推荐数据开始   " + str(datetime.datetime.now()))
+    with connection.cursor() as cursor:
+        cursor.callproc('update_recommend_list', (userID,))  # 注意参数应该是一个元组
+        connection.connection.commit()  # 调用存储过程后，确定要进行commit执行
+    print("更新推荐数据结束   " + str(datetime.datetime.now()))

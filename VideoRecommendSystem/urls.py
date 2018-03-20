@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 import user
 import administrator
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^log/', include('log.urls', namespace='log')),  # 日志模块
@@ -26,3 +28,5 @@ urlpatterns = [
     url(r'^$', user.views.index, name='index'),  # 首页
     url(r'^video/admin$', administrator.views.administrator, name='administrator'),  # 后台管理
 ]
+
+# import task.views

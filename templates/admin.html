@@ -183,6 +183,16 @@
 									</span>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="txt_isnew" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">是否新的:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_isnew" class="form-control"
+                                               id="utxt_isnew" placeholder="是否新的">
+									</span>
+                        </div>
+
+                    </div>
                     <div class="row" style="margin-top: 15px;">
                         <div class="col-md-12">
                             <label for="txt_genres" class="col-sm-2 control-label"
@@ -428,6 +438,11 @@
                 field: 'year',
                 align: 'center',
                 valign: 'middle'
+            }, {
+                title: '新视频',
+                field: 'isNew',
+                align: 'center',
+                valign: 'middle'
             },{
                 title: '操作',
                 field: 'operate',
@@ -532,6 +547,7 @@
         $('#utxt_name').val(row.movie_title);
         $('#utxt_year').val(row.year);
         $('#utxt_genres').val(row.genres);
+        $('#utxt_isnew').val(row.isNew);
 
         $('#updateVideoLabel').text("修改视频信息");
 
@@ -548,6 +564,7 @@
         var id = $('#utxt_id').val(),
             name = $('#utxt_name').val(),
             year = $('#utxt_year').val(),
+            isnew=$('#utxt_isnew').val(),
             genres = $('#utxt_genres').val();
 
         //验证数据
@@ -559,7 +576,14 @@
             layer.msg('请填写视频年份!', {icon: 2, time: 1500});
             return false;
         }
-
+        if (!isnew) {
+            layer.msg('请填写视频是否为新的!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!genres) {
+            layer.msg('请填写视频分类!', {icon: 2, time: 1500});
+            return false;
+        }
         $.ajax({
             url: '../administrator/updateVideo',
             method: 'post',
@@ -568,6 +592,7 @@
                 id: id,
                 name: name,
                 year: year,
+                isnew:isnew,
                 genres: genres
             },
             //阻止深度序列化，向后台传送数组

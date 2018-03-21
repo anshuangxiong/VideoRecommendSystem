@@ -24,10 +24,10 @@ def administrator(request):
 
 @csrf_exempt
 def videoList(request):
-    movies = Movies.objects.all().order_by('movie_id').reverse()
+    movies = Movies.objects.all().order_by('-isnew','movie_id')
     lists = []
     for movie in movies:
-        movie_json = {"id": movie.movie_id, 'movie_title': movie.title,'year':movie.year, 'genres': movie.genres}
+        movie_json = {"id": movie.movie_id, 'movie_title': movie.title,'year':movie.year, 'genres': movie.genres,'isNew':movie.isnew}
         lists.append(movie_json)
     return JsonResponse(lists,  safe=False, content_type='application/json')
 
@@ -61,11 +61,12 @@ def updateVideo(request):
     movieName = request.POST.get('name')
     movieYear = request.POST.get('year')
     movieGenres = request.POST.get('genres')
-    if movieId == '' or movieName == '' or movieYear == '' or movieGenres=='':
+    movieIsNew = request.POST.get('isnew')
+    if movieId == '' or movieName == '' or movieYear == '' or movieGenres=='' or movieIsNew=='':
         json_data = json.dumps({'code': '0001', 'info': '参数不能为空', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     if len(Movies.objects.filter(movie_id=int(movieId))) >0:
-        movie = Movies.objects.filter(movie_id=int(movieId)).update(title=movieName,year=movieYear,genres=movieGenres)
+        movie = Movies.objects.filter(movie_id=int(movieId)).update(title=movieName,year=movieYear,genres=movieGenres,isnew=movieIsNew)
         json_data = json.dumps({'code': '0000', 'info': '更新成功', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     else:
@@ -100,7 +101,7 @@ def addVideo(request):
         return JsonResponse(json_data, safe=False, content_type='application/json')
     else:
         max_id=Movies.objects.all().order_by('movie_id').reverse()[0].movie_id
-        Movies.objects.create(movie_id=int(max_id)+1,title=str(name),year=str(year),genres=genres)
+        Movies.objects.create(movie_id=int(max_id)+1,title=str(name),year=str(year),genres=genres,isnew=1)
         json_data = json.dumps({'code': '0000', 'info': '添加成功', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
 

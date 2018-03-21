@@ -36,7 +36,7 @@ def movie_list_by_type(request):
     if find_text != '':
         movies = Movies.objects.filter(title__contains=find_text).distinct().order_by('movie_id')
     else:
-        movies = Movies.objects.filter(genres__contains=movie_type).distinct().order_by('movie_id')
+        movies = Movies.objects.filter(genres__contains=movie_type).distinct().order_by('-isnew','movie_id')
     paginator = Paginator(movies, 10)  # Show 10 contacts per page
     page = request.POST.get('page')
     try:

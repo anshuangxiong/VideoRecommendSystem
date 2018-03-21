@@ -19,6 +19,7 @@ class Movies(models.Model):
     m_desc = models.TextField(blank=True, null=True)
     title_en = models.CharField(max_length=255, blank=True, null=True)
     movie_80_id = models.FloatField(blank=True, null=True)
+    isnew = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False

@@ -45,7 +45,7 @@ def recommend_best_score(request):
         return JsonResponse(json_data, safe=False, content_type='application/json')
     except KeyError as e:
         logger.error("当前没有用户登录")
-        movies = Movies.objects.raw('select m.movie_id,m.title,m.genres,m.year,m.genres_en from MOVIES m,(select distinct r.movie_id from RATINGS r where r.rating=5) t where t.movie_id=m.movie_id')
+        movies = Movies.objects.raw('select m.movie_id,m.title,m.genres,m.year,m.genres_en,m.isnew,to_char(m.m_desc) from MOVIES m right join (select distinct r.movie_id from RATINGS r where r.rating=5) t on t.movie_id=m.movie_id order by m.isnew desc')
         lists = []
         for movie in movies:
             lists.append(movie)

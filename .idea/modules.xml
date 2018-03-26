@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/VideoRecommendSystem.iml" filepath="$PROJECT_DIR$/.idea/VideoRecommendSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data/grap/.idea/grap.iml" filepath="$PROJECT_DIR$/data/grap/.idea/grap.iml" />
     </modules>
   </component>
 </project>

@@ -134,7 +134,7 @@
                                     <button type="button" class="btn btn-warning btn-xs" id="recommend_button">推荐</button>
                                 </div>
                             </div>
-                            <div class="box-body">
+                            <div class="box-body" style="height:510px;overflow-y:auto;">
                                 <table id="movie_list" class="table">
                                     {% comment %}这里放置视频列表{% endcomment %}
                                 </table>
@@ -154,17 +154,18 @@
                                     <div class="col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <video ishivideo="true" id="video" autoplay="true" isrotate="false" autoHide="true">
+                                               {% comment %} <video ishivideo="true" id="video" autoplay="true" isrotate="false" autoHide="true">
                                             <source id="video_src" src=""
                                                     type="video/mp4">
-                                            </video>
+                                            </video>{% endcomment %}
+                                                <img id="detail_img" src="">
                                             </div>
 
                                         </div>
                                         <div class="row" style="margin-top: 30px">
                                             <div class="col-sm-2">评分：</div>
                                             <div class="col-sm-4" >
-                                                <input type="text" value="" id="score_value" class="slider form-control" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="yellow">
+                                                <input type="text" value="" id="score_value" class="slider form-control" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="3" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="yellow">
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="button" id="score_btn" class="btn btn-block btn-primary btn-sm">打分</button>
@@ -183,25 +184,30 @@
                                                 </p>
                                                 <strong><i class="fa fa-book margin-r-5"></i> Name</strong>
                                                 <p class="text-muted" id="detail_name">
-
                                                 </p>
-                                                <hr>
+
                                                 <strong><i class="fa fa-map-marker margin-r-5"></i> Year</strong>
                                                 <p class="text-muted" id="detail_year"></p>
-                                                <hr>
+
+                                                <strong><i class="fa fa-user-secret margin-r-5"></i> Director</strong>
+                                                <p class="text-muted" id="detail_director"></p>
+
+                                                <strong><i class="fa fa-calculator margin-r-5"></i> Rating</strong>
+                                                <p class="text-muted" id="detail_rating"></p>
+
                                                 <strong><i class="fa fa-pencil margin-r-5"></i> GENRES</strong>
-                                                <div id="detail_genres">
-                                                    <span class="label label-info">Mystery</span>
-                                                    <span class="label label-info">Mystery</span>
-                                                    <span class="label label-info">Mystery</span>
-                                                    <span class="label label-info">Mystery</span>
-                                                    <span class="label label-info">Mystery</span>
-                                                    <span class="label label-info">Mystery</span>
+                                                <div class="text-muted" id="detail_genres">
                                                 </div>
-                                                <hr>
+
+                                                <strong><i class="fa fa-users margin-r-5"></i> Actor</strong>
+                                                <div  id="detail_actor" style="height:80px;overflow-y:auto;">
+                                                </div>
+
                                                 <strong><i class="fa fa-file-text-o margin-r-5"></i> DESC</strong>
                                                 <div id="detail_desc" style="height:80px;overflow-y:auto;">
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +219,7 @@
             </section>
         </div>
     </div>
-    <footer class="main-footer">
+    {% comment %}<footer class="main-footer">
         <div class="container">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0.0
@@ -222,7 +228,7 @@
             rights
             reserved.
         </div>
-    </footer>
+    </footer>{% endcomment %}
 </div>
 <div class="example-modal" >
     <div class="modal modal-primary1 fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -445,6 +451,7 @@
         });
 
         $("#recommend").click(function(e){
+            page=1;
             $("#recommend_button").text("推荐");
             $("#nav_ul").find('li').each(function(){
                 $(this).attr('class','');
@@ -642,6 +649,10 @@
                             $("#detail_id").text(msg.data[i]['pk']);
                             $("#detail_name").text(msg.data[i]['fields']['title']);
                             $("#detail_year").text(msg.data[i]['fields']['year']);
+                            $("#detail_director").text(msg.data[i]['fields']['director']);
+                            $("#detail_actor").text(msg.data[i]['fields']['leadactors']);
+                            $("#detail_rating").text(msg.data[i]['fields']['averating']);
+                            $("#detail_img").attr("src",msg.data[i]['fields']['backpost']);
                             $("#detail_genres").html('');
                              var genres =msg.data[i]['fields']['genres'];
                             var genress = genres.split("|");
@@ -651,29 +662,38 @@
                                  }
                                  $("#detail_genres").append("<span class='label label-info' style='margin-left:3px'>"+genress[j]+"</span>");
                             }
-                            $("#detail_desc").text(msg.data[i]['fields']['m_desc']);
+                            $("#detail_desc").text(msg.data[i]['fields']['description']);
                         }
                         var tr = $('<tr></tr>');
                         var td = $('<td></td>');
-                        var a = $('<a></a>');
+                        var a=$('<img></img>');
+                        a.css("height","150px");
                         a.css("cursor","pointer");
-                        a.append(msg.data[i]['fields']['title']);
+                        a.attr("src",msg.data[i]['fields']['picture'])
                         a.attr("movie_id",msg.data[i]['pk']);
                         a.attr("movie_title",msg.data[i]['fields']['title']);
                         a.attr("movie_genres",msg.data[i]['fields']['genres']);
-                        a.attr("movie_year",msg.data[i]['fields']['year']);
-                        a.attr("movie_desc",msg.data[i]['fields']['m_desc']);
+                        a.attr("movie_year",msg.data[i]['fields']['show_year']);
+                        a.attr("movie_director",msg.data[i]['fields']['director']);
+                        a.attr("movie_rating",msg.data[i]['fields']['averating']);
+                        a.attr("movie_actor",msg.data[i]['fields']['leadactors']);
+                        a.attr("movie_desc",msg.data[i]['fields']['description']);
+                         a.attr("movie_img",msg.data[i]['fields']['backpost']);
                         a.click(function(){
                             var movie_id = $(this).attr("movie_id");
                             var movie_title = $(this).attr("movie_title");
                             $("#movie_title").html(movie_title);
-                            $("#video").html("");
+                           {% comment %} $("#video").html("");
                             var src="../static/video/《玩具总动员》.mkv";
                             $("#video").prop("src",src);
-                            $("#video")[0].play();
+                            $("#video")[0].play();{% endcomment %}
                             $("#detail_id").text(movie_id);
                             $("#detail_name").text(movie_title);
                             $("#detail_year").text($(this).attr("movie_year"));
+                            $("#detail_director").text($(this).attr("movie_director"));
+                            $("#detail_actor").text($(this).attr("movie_actor"));
+                            $("#detail_rating").text($(this).attr("movie_rating"));
+                            $("#detail_img").attr("src",$(this).attr("movie_img"));
                             var genres = $(this).attr("movie_genres");
                             var genress = genres.split("|");
                             $("#detail_genres").html('');
@@ -686,7 +706,17 @@
                             $("#detail_desc").text($(this).attr("movie_desc"));
                         });
                         td.append(a);
-                        tr.append(td);
+                        var td_info=$('<td></td>');
+
+                        var html='<strong><i class="fa fa-book margin-r-5"></i> 电影名称</strong> ' +
+                        '<p class="text-muted" id="detail_name">'+msg.data[i]['fields']['movie_name']+'</p>' +
+                        '<strong><i class="fa fa-map-marker margin-r-5"></i> 年代</strong>' +
+                        '<p class="text-muted" id="detail_year">'+msg.data[i]['fields']['year']+'</p>' +
+                        '<strong><i class="fa fa-list margin-r-5"></i> 类型</strong>' +
+                        '<p class="text-muted" id="detail_rating">'+msg.data[i]['fields']['typelist']+'</p>';
+                        td_info.html(html);
+                         tr.append(td);
+                         tr.append(td_info);
                         $("#movie_list").append(tr);
                     }
                 }
@@ -712,6 +742,7 @@
             },
             success:function(msg){
                 var msg = JSON.parse(msg);
+                console.log(msg);
                 if(msg.code=='0000'){
                      $("#movie_list").html("");
                      msg.data=JSON.parse(msg.data);
@@ -720,7 +751,11 @@
                              $("#movie_title").html(msg.data[i]['fields']['title']);
                             $("#detail_id").text(msg.data[i]['pk']);
                             $("#detail_name").text(msg.data[i]['fields']['title']);
-                            $("#detail_year").text(msg.data[i]['fields']['year']);
+                            $("#detail_year").text(msg.data[i]['fields']['show_year']);
+                            $("#detail_director").text(msg.data[i]['fields']['director']);
+                            $("#detail_actor").text(msg.data[i]['fields']['leadactors']);
+                            $("#detail_rating").text(msg.data[i]['fields']['averating']);
+                            $("#detail_img").attr("src",msg.data[i]['fields']['backpost']);
                             $("#detail_genres").html('');
                              var genres =msg.data[i]['fields']['genres'];
                             var genress = genres.split("|");
@@ -730,29 +765,38 @@
                                  }
                                  $("#detail_genres").append("<span class='label label-info' style='margin-left:3px'>"+genress[j]+"</span>");
                             }
-                            $("#detail_desc").text(msg.data[i]['fields']['m_desc']);
+                            $("#detail_desc").text(msg.data[i]['fields']['description']);
                         }
                          var tr=$('<tr></tr>');
                          var td=$('<td></td>');
-                         var a=$('<a></a>');
+                         var a=$('<img></img>');
+                         a.css("height","150px");
                          a.css("cursor","pointer");
-                         a.append(msg.data[i]['fields']['title']);
+                         a.attr("src",msg.data[i]['fields']['picture'])
                          a.attr("movie_id",msg.data[i]['pk']);
                          a.attr("movie_title",msg.data[i]['fields']['title']);
                          a.attr("movie_genres", msg.data[i]['fields']['genres']);
-                         a.attr("movie_year", msg.data[i]['fields']['year']);
-                         a.attr("movie_desc", msg.data[i]['fields']['m_desc']);
+                         a.attr("movie_year", msg.data[i]['fields']['show_year']);
+                         a.attr("movie_director",msg.data[i]['fields']['director']);
+                         a.attr("movie_rating",msg.data[i]['fields']['averating']);
+                         a.attr("movie_actor",msg.data[i]['fields']['leadactors']);
+                         a.attr("movie_desc", msg.data[i]['fields']['description']);
+                         a.attr("movie_img",msg.data[i]['fields']['backpost']);
                          a.click(function () {
                              var movie_id = $(this).attr("movie_id");
                              var movie_title = $(this).attr("movie_title");
                              $("#movie_title").html(movie_title);
-                             $("#video").html("");
+                             {% comment %}$("#video").html("");
                              var src="../static/video/前任3：再见前任.mp4";
                              $("#video").prop("src",src);
-                            $("#video")[0].play();
+                            $("#video")[0].play();{% endcomment %}
                               $("#detail_id").text(movie_id);
                              $("#detail_name").text(movie_title);
                              $("#detail_year").text($(this).attr("movie_year"));
+                             $("#detail_director").text($(this).attr("movie_director"));
+                            $("#detail_actor").text($(this).attr("movie_actor"));
+                            $("#detail_rating").text($(this).attr("movie_rating"));
+                             $("#detail_img").attr("src",$(this).attr("movie_img"));
                              var genres = $(this).attr("movie_genres");
                              var genress = genres.split("|");
                              $("#detail_genres").html('');
@@ -766,7 +810,32 @@
 
                          });
                          td.append(a);
+                         var td_info=$('<td></td>');
+                         var recommend_data=msg.data[i]['fields']['recommend_score'];
+                         var recommend_name="推荐系数";
+                         if(recommend_data==null){
+                             recommend_data=msg.data[i]['fields']['averating'];
+                              recommend_name="评分";
+                         }
+                         var html='';
+                         if(msg.data[i]['fields']['isnew']==1){
+                             html='<strong><i class="fa fa-book margin-r-5"></i> 电影名称</strong> ' +
+                            '<p class="text-muted" style="color:#F00">'+msg.data[i]['fields']['movie_name']+'</p>' +
+                            '<strong><i class="fa fa-map-marker margin-r-5"></i> 年代</strong>' +
+                            '<p class="text-muted" style="color:#F00">'+msg.data[i]['fields']['year']+'</p>' +
+                            '<strong><i class="fa fa-signal margin-r-5"></i> '+recommend_name+'</strong>' +
+                            '<p class="text-muted" style="color:#F00">'+recommend_data+'</p>';
+                         }else{
+                             html='<strong><i class="fa fa-book margin-r-5"></i> 电影名称</strong> ' +
+                            '<p class="text-muted" >'+msg.data[i]['fields']['movie_name']+'</p>' +
+                            '<strong><i class="fa fa-map-marker margin-r-5"></i> 年代</strong>' +
+                             '<p class="text-muted" >'+msg.data[i]['fields']['year']+'</p>' +
+                            '<strong><i class="fa fa-signal margin-r-5"></i> '+recommend_name+'</strong>' +
+                            '<p class="text-muted" >'+recommend_data+'</p>';
+                         }
+                        td_info.html(html);
                          tr.append(td);
+                         tr.append(td_info);
                          $("#movie_list").append(tr);
                      }
                 }

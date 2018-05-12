@@ -33,32 +33,27 @@ def recommend_best_score(request):
         userId = str(user['pk'])
         print("按推荐算法开始推荐   " + str(datetime.datetime.now()))
         movies = Movies.objects.raw(
-            'select m.movie_id,m.title,m.genres,m.year,m.m_desc from Movies m, recommend r where m.movie_id=r.movie_id and r.user_id='+userId+' order by r.recommend_score desc')[(page-1)*K:page*K]
+            'select m.movie_id,m.title,m.genres,m.year,m.description,'
+            'm.movie_name,m.show_year,m.director,m.leadactors,m.picture,'
+            'm.averating,m.typelist,m.backpost,r.recommend_score '
+            'from Movies m , recommend r '
+            'where m.movie_id=r.movie_id and r.user_id='+userId+' order by r.recommend_score desc,m.movie_id')[(page-1)*K:page*K]
         print("按推荐算法推荐结束   " + str(datetime.datetime.now()))
-        print(len(movies))
+        for movie in movies:
+            movie.recommend_score=round(movie.recommend_score,2)
         if len(movies)==0:
             movies = recommend_by_user_hobby(user['pk'],page,K)
         movies = serializers.serialize("json", movies)
         json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
-        # update_recommend_list2(104)
-        # grapdata()
         return JsonResponse(json_data, safe=False, content_type='application/json')
     except KeyError as e:
         logger.error("当前没有用户登录")
-        movies = Movies.objects.raw('select m.movie_id,m.title,m.genres,m.year,m.genres_en,m.isnew,to_char(m.m_desc) from MOVIES m right join (select distinct r.movie_id from RATINGS r where r.rating=5) t on t.movie_id=m.movie_id order by m.isnew desc')
-        lists = []
-        for movie in movies:
-            lists.append(movie)
-        paginator = Paginator(lists, 10)  # Show 10 contacts per page
         page = request.POST.get('page')
-        try:
-            contacts = paginator.page(page)
-        except PageNotAnInteger:
-            contacts = paginator.page(1)
-        except EmptyPage:
-            contacts = paginator.page(paginator.num_pages)
-        lists = serializers.serialize("json", contacts)
-        json_data = json.dumps({'code': '0000', 'info': '成功', 'data': lists})
+        K = 10
+        page = int(page)
+        movies = Movies.objects.all().order_by('-isnew','-averating','movie_id')[(page-1)*K:page*K]
+        movies = serializers.serialize("json", movies)
+        json_data = json.dumps({'code': '0000', 'info': '成功', 'data': movies})
         return JsonResponse(json_data,  safe=False, content_type='application/json')
 
 
@@ -73,9 +68,9 @@ def recommend_by_user_hobby(userId,page,K):
         tmp = "%"+hobby+"%"
         param.append(tmp)
         if sql=="":
-            sql =sql+  "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,t.title_en,t.movie_80_id,to_char(t.m_desc) from MOVIES t where t.genres_en like %s";
+            sql =sql+  "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,t.backpost from MOVIES t where t.genres_en like %s";
         else:
-            sql= sql+ " union "+ "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,t.title_en,t.movie_80_id,to_char(t.m_desc) from MOVIES t where t.genres_en like %s";
+            sql= sql+ " union "+ "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,t.backpost from MOVIES t where t.genres_en like %s";
     print(sql)
     movies = Movies.objects.raw(sql,param)[(page-1)*K:page*K]
     print("按用户爱好推荐结束   " + str(datetime.datetime.now()))

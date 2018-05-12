@@ -16,10 +16,17 @@ class Movies(models.Model):
     year = models.CharField(max_length=5, blank=True, null=True)
     genres = models.CharField(max_length=255, blank=True, null=True)
     genres_en = models.CharField(max_length=255, blank=True, null=True)
-    m_desc = models.TextField(blank=True, null=True)
-    title_en = models.CharField(max_length=255, blank=True, null=True)
-    movie_80_id = models.FloatField(blank=True, null=True)
     isnew = models.FloatField(blank=True, null=True)
+    movie_name = models.CharField(max_length=1000, blank=True, null=True)
+    show_year = models.DateField(blank=True, null=True)
+    director = models.CharField(max_length=1000, blank=True, null=True)
+    leadactors = models.CharField(max_length=1000, blank=True, null=True)
+    picture = models.CharField(max_length=1000, blank=True, null=True)
+    averating = models.FloatField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    typelist = models.CharField(max_length=1000, blank=True, null=True)
+    backpost = models.TextField(blank=True, null=True)
+    recommend_score = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False

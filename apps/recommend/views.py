@@ -68,9 +68,9 @@ def recommend_by_user_hobby(userId,page,K):
         tmp = "%"+hobby+"%"
         param.append(tmp)
         if sql=="":
-            sql =sql+  "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,t.backpost from MOVIES t where t.genres_en like %s";
+            sql =sql+  "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,to_char(t.backpost) from MOVIES t where t.genres_en like %s";
         else:
-            sql= sql+ " union "+ "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,t.backpost from MOVIES t where t.genres_en like %s";
+            sql= sql+ " union "+ "select  t.movie_id,t.title,t.genres,t.genres_en,t.year,to_char(t.description),t.movie_name,t.show_year,t.director,t.leadactors,t.picture,t.averating,t.typelist,to_char(t.backpost) from MOVIES t where t.genres_en like %s";
     print(sql)
     movies = Movies.objects.raw(sql,param)[(page-1)*K:page*K]
     print("按用户爱好推荐结束   " + str(datetime.datetime.now()))

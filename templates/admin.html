@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../static/user/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="../static/user/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" type="text/css" href="../static/js/bootstrapTable/bootstrap-table.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/js/select2/dist/css/select2.min.css"/>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
@@ -33,21 +34,21 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Alexander Pierce</span>
+                            <span class="hidden-xs">Administrator</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
-                            <li class="user-header">
+                            {% comment %}<li class="user-header">
                                 <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle"
                                      alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
-                                    <small>Member since Nov. 2012</small>
+                                    Administrator
+                                    <small>2018.05.20</small>
                                 </p>
-                            </li>
+                            </li>{% endcomment %}
                             <!-- Menu Body -->
-                            <li class="user-body">
+                           {% comment %} <li class="user-body">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
                                         <a href="#">Followers</a>
@@ -69,7 +70,7 @@
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat">Sign out</a>
                                  </div>
-                            </li>
+                            </li>{% endcomment %}
                         </ul>
                     </li>
                 </ul>
@@ -86,12 +87,12 @@
                     <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Alexander Pierce</p>
+                    <p>Administrator</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
             <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
+            {% comment %}<form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
                     <span class="input-group-btn">
@@ -99,16 +100,16 @@
                 </button>
               </span>
                 </div>
-            </form>
+            </form>{% endcomment %}
             <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
+                <li class="header">主菜单</li>
                 <li class="active"><a href="#" id="video_manager"><i class="fa fa-video-camera"></i> <span>视频管理</span></a></li>
                 <li><a href="#" id="user_manager"><i class="fa fa-user"></i> <span>用户管理</span></a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-superscript"></i> <span>算法优化</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="#">相似度</a></li>
-                        <li><a href="#">推荐度</a></li>
+                        <li><a href="#" id="similiar_user">相似度</a></li>
+                        <li><a href="#" id="recommend_list">推荐度</a></li>
                     </ul>
                 </li>
             </ul>
@@ -130,12 +131,24 @@
                                 <button id="btn_add" type="button" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                                 </button>
+                                <div class="row" id="simi_user_div" style="display: none">
+                                    <label style="margin-left: 20px">选择用户</label>:&nbsp;&nbsp;<select style="width: 130px;" id="userIdList1"></select>&nbsp;&nbsp;
+                                    <button id="find_simi_user" type="button"  class="btn btn-default btn-sm ">查询</button>
+                                </div>
+                                <div class="row" id="recom_list_div" style="display: none">
+                                    <label style="margin-left: 20px">选择用户</label>:&nbsp;&nbsp;<select style="width: 130px" id="userIdList2"></select>&nbsp;&nbsp;
+                                    <button id="find_recom_list" type="button" class="btn btn-default btn-sm ">查询</button>
+                                </div>
+                                {% comment %}<select style="width: 150px" id="userIdList"></select>{% endcomment %}
+
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="video_user_table" class="table table-bordered table-hover">
                             </table>
+
+                          <div id="main_graph"   style="width: 1100px;height:400px;display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -145,9 +158,9 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 2.3.7
+            <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright &copy; 2017-2018 <a href="localhost:8000">AnXiong</a>.</strong> All rights
         reserved.
     </footer>
     <div class="control-sidebar-bg"></div>
@@ -183,7 +196,7 @@
 									</span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top: 15px;">
                         <div class="col-md-6">
                             <label for="txt_isnew" class="col-sm-4 control-label"
                                    style="margin-top: 6px;">是否新的:</label> <span class="col-sm-8">
@@ -192,13 +205,59 @@
 									</span>
                         </div>
 
+                        <div class="col-md-6">
+                            <label for="txt_averating" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">评分:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_averating" class="form-control"
+                                               id="utxt_averating" placeholder="评分">
+									</span>
+                        </div>
+
                     </div>
+
                     <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-6">
+                            <label for="txt_director" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">导演:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_director" class="form-control"
+                                               id="utxt_director" placeholder="导演">
+									</span>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_picture" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">图片:</label> <span class="col-sm-10">
+										<input type="text" name="utxt_picture" class="form-control"
+                                               id="utxt_picture" placeholder="图片">
+									</span>
+                        </div>
+                    </div>
+                     <div class="row" style="margin-top: 15px;">
                         <div class="col-md-12">
                             <label for="txt_genres" class="col-sm-2 control-label"
                                    style="margin-top: 6px;">类别:</label> <span class="col-sm-10">
-										<textarea id="utxt_genres" class="form-control" rows="3"></textarea>
-                            </select>
+										<input type="text" name="utxt_genres" class="form-control"
+                                               id="utxt_genres" placeholder="类别">
+									</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_actor" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">演员:</label> <span class="col-sm-10">
+										<textarea id="utxt_actor" class="form-control" rows="3"></textarea>
+									</span>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_description" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">描述:</label> <span class="col-sm-10">
+										<textarea id="utxt_description" class="form-control" rows="3"></textarea>
 									</span>
                         </div>
 
@@ -251,11 +310,57 @@
                         </div>
                     </div>
                     <div class="row" style="margin-top: 15px;">
+                       <div class="col-md-6">
+                            <label for="txt_director" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">导演:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_director" class="form-control"
+                                               id="txt_director" placeholder="导演">
+									</span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="txt_averating" class="col-sm-4 control-label"
+                                   style="margin-top: 6px;">评分:</label> <span class="col-sm-8">
+										<input type="text" name="utxt_averating" class="form-control"
+                                               id="txt_averating" placeholder="评分">
+									</span>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
                         <div class="col-md-12">
-                            <label for="txt_genres" class="col-sm-2 control-label" style="margin-top: 6px;">类别:</label>
-                            <span class="col-sm-10">
-                                <textarea id="txt_genres" class="form-control" rows="3"></textarea>
-							</span>
+                            <label for="txt_picture" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">图片:</label> <span class="col-sm-10">
+										<input type="text" name="txt_picture" class="form-control"
+                                               id="txt_picture" placeholder="图片">
+									</span>
+                        </div>
+                    </div>
+                     <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_genres" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">类别:</label> <span class="col-sm-10">
+										<input type="text" name="utxt_genres" class="form-control"
+                                               id="txt_genres" placeholder="类别">
+									</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_actor" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">演员:</label> <span class="col-sm-10">
+										<textarea id="txt_actor" class="form-control" rows="3"></textarea>
+									</span>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <label for="txt_description" class="col-sm-2 control-label"
+                                   style="margin-top: 6px;">描述:</label> <span class="col-sm-10">
+										<textarea id="txt_description" class="form-control" rows="3"></textarea>
+									</span>
                         </div>
 
                     </div>
@@ -280,6 +385,9 @@
     </div>
 </div>
 
+
+
+
 <script src="../static/user/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../static/user/bootstrap/js/bootstrap.min.js"></script>
 <script src="../static/user/plugins/slimScroll/jquery.slimscroll.min.js"></script>
@@ -287,8 +395,11 @@
 <script src="../static/user/dist/js/app.min.js"></script>
 <script src="../static/user/dist/js/demo.js"></script>
 <script type="text/javascript" src="../static/js/bootstrapTable/bootstrap-table.js"></script>
-<script type="text/javascript" src="../static/js/bootstrapTable/bootstrap-table-locale-all.js"></script>
+<script type="text/javascript" src="../static/js/bootstrapTable/locale/bootstrap-table-zh-CN.js"></script>
 <script type="text/javascript" src="../static/js/layer/layer.js"></script>
+<script type="text/javascript" src="../static/js/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="../static/js/select2/dist/js/select2.min.js"></script>
+
 <script>
 
     $(function () {
@@ -302,19 +413,60 @@
                 keyboard: true
             });
         });
-
+        showSelect()
     });
 
     $("#video_manager").click(function () {
         $("#video_user_table").bootstrapTable('destroy');
         TableInit("../administrator/videoList");
+        $("#main_graph").hide();
+        $("#video_user_table").css("display","block");
+        $("#btn_add").show();
+        $("#simi_user_div").hide();
+        $("#recom_list_div").hide();
+        $("#toolbar").show();
     });
     $("#user_manager").click(function () {
+        $("#toolbar").hide();
         $("#video_user_table").bootstrapTable('destroy');
         TableInit("../administrator/userList");
+        $("#main_graph").hide();
+        //$("#video_user_table").css("display","block");
     });
 
+    $("#similiar_user").click(function () {
+         $("#video_user_table").bootstrapTable('destroy');
+         $("#video_user_table").css("display","none");
+        $("#main_graph").show();
+        $("#btn_add").hide();
+        $("#simi_user_div").show();
+        $("#recom_list_div").hide();
+        $("#toolbar").show();
+        showSelect();
+        var userId=$("#userIdList1").val();
+        getSimiliarData(userId);
+        $("#find_simi_user").click(function(){
+            var userId=$("#userIdList1").val();
+            getSimiliarData(userId);
+        });
+    });
 
+    $("#recommend_list").click(function () {
+         $("#video_user_table").bootstrapTable('destroy');
+         $("#video_user_table").css("display","none");
+        $("#main_graph").show();
+        $("#btn_add").hide();
+        $("#simi_user_div").hide();
+        $("#recom_list_div").show();
+        $("#toolbar").show();
+        showSelect();
+        var userId=$("#userIdList2").val();
+        getRecommendData(userId);
+        $("#find_recom_list").click(function(){
+            var userId=$("#userIdList2").val();
+            getRecommendData(userId);
+        });
+    });
     function TableInit(url) {
         var commom_attr = {
             //请求地址
@@ -342,7 +494,7 @@
             //指定工具栏
             toolbar: "#toolbar",
             //显示隐藏列
-            showColumns: false,
+            showColumns: true,
             //显示刷新按钮
             showRefresh: false,
             //切换显示样式
@@ -358,7 +510,7 @@
             //是否显示分页
             pagination: true,
             //是否显示分页按钮
-            showPaginationSwitch: false,
+            showPaginationSwitch: true,
             //是否启用点击选中行
             clickToSelect: false,
             //最少要显示的列数
@@ -438,6 +590,34 @@
                 field: 'year',
                 align: 'center',
                 valign: 'middle'
+            }, {
+                title: '评分',
+                field: 'averating',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '导演',
+                field: 'director',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '图片',
+                field: 'picture',
+                align: 'center',
+                valign: 'middle',
+                editor:'text'
+            }, {
+                title: '描述',
+                field: 'description',
+                align: 'center',
+                valign: 'middle',
+                visible:false
+            }, {
+                title: '演员',
+                field: 'actor',
+                align: 'center',
+                valign: 'middle',
+                visible:false
             }, {
                 title: '新视频',
                 field: 'isNew',
@@ -548,6 +728,13 @@
         $('#utxt_year').val(row.year);
         $('#utxt_genres').val(row.genres);
         $('#utxt_isnew').val(row.isNew);
+        $('#utxt_averating').val(row.averating);
+        $('#utxt_picture').val(row.picture);
+        $('#utxt_director').val(row.director);
+        $('#utxt_actor').val(row.actor);
+        $('#utxt_description').val(row.description);
+
+
 
         $('#updateVideoLabel').text("修改视频信息");
 
@@ -565,7 +752,15 @@
             name = $('#utxt_name').val(),
             year = $('#utxt_year').val(),
             isnew=$('#utxt_isnew').val(),
-            genres = $('#utxt_genres').val();
+            genres = $('#utxt_genres').val(),
+
+            averating = $('#utxt_averating').val(),
+            picture=$('#utxt_picture').val(),
+            description = $('#utxt_description').val(),
+            director=$('#utxt_director').val(),
+            actor = $('#utxt_actor').val();
+
+
 
         //验证数据
         if (!name) {
@@ -584,6 +779,26 @@
             layer.msg('请填写视频分类!', {icon: 2, time: 1500});
             return false;
         }
+        if (!averating) {
+            layer.msg('请填写视频评分!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!picture) {
+            layer.msg('请填写视频图片!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!description) {
+            layer.msg('请填写视频描述!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!director) {
+            layer.msg('请填写视频导演!', {icon: 2, time: 1500});
+            return false;
+        }
+        if (!actor) {
+            layer.msg('请填写视频演员!', {icon: 2, time: 1500});
+            return false;
+        }
         $.ajax({
             url: '../administrator/updateVideo',
             method: 'post',
@@ -593,7 +808,12 @@
                 name: name,
                 year: year,
                 isnew:isnew,
-                genres: genres
+                genres: genres,
+                averating:averating,
+                picture:picture,
+                description:description,
+                director:director,
+                actor:actor
             },
             //阻止深度序列化，向后台传送数组
             traditional: true,
@@ -615,7 +835,13 @@
 
         var name = $('#txt_name').val(),
             year = $('#txt_year').val(),
-            genres = $('#txt_genres').val();
+            genres = $('#txt_genres').val(),
+            averating = $('#txt_averating').val(),
+            picture=$('#txt_picture').val(),
+            description = $('#txt_description').val(),
+            director=$('#txt_director').val(),
+            actor = $('#txt_actor').val();
+
 
         //验证数据
         if (!name) {
@@ -634,7 +860,12 @@
             data: {
                 name: name,
                 year: year,
-                genres: genres
+                genres: genres,
+                averating:averating,
+                picture:picture,
+                description:description,
+                director:director,
+                actor:actor
             },
             //阻止深度序列化，向后台传送数组
             traditional: true,
@@ -681,6 +912,135 @@
        $("#video_user_table").bootstrapTable('refresh');
     }
 
+
+  function getRecommendData(userId){
+        $.ajax({
+                url: '../administrator/getRecommendData',
+                data: {
+                    userId: userId,
+                },
+                method: 'post',
+                contentType: "application/x-www-form-urlencoded",
+                //阻止深度序列化，向后台传送数组
+                traditional: true,
+                success: function (msg) {
+                    var msg = JSON.parse(msg);
+                    if (msg.code == '0000') {
+                        msg.data = JSON.parse(msg.data);
+                        var movieIds=[];
+                        var recommendVlaue=[];
+                        for (var i = 0; i < msg.data.length; i++) {
+                            movieIds.push(msg.data[i]['fields']['movie_id']);
+                            recommendVlaue.push(parseFloat(msg.data[i]['fields']['recommend_score']).toFixed(2));
+                        }
+                        var myChart = echarts.init(document.getElementById('main_graph'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '用户推荐值'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data:['推荐值']
+                            },
+                            xAxis: {
+                                data: movieIds
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '推荐值',
+                                type: 'bar',
+                                data: recommendVlaue
+                            }]
+                        };
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    } else {
+
+                    }
+                }
+            });
+    }
+
+
+
+    function getSimiliarData(userId){
+        $.ajax({
+                url: '../administrator/getSimiliarData',
+                data: {
+                    userId: userId,
+                },
+                method: 'post',
+                contentType: "application/x-www-form-urlencoded",
+                //阻止深度序列化，向后台传送数组
+                traditional: true,
+                success: function (msg) {
+                    var msg = JSON.parse(msg);
+                    if (msg.code == '0000') {
+                        msg.data = JSON.parse(msg.data);
+                        var similiarUser=[];
+                        var similiarVlaue=[];
+                        for (var i = 0; i < msg.data.length; i++) {
+                            similiarUser.push(msg.data[i]['fields']['c']);
+                            similiarVlaue.push(parseFloat(msg.data[i]['fields']['v']).toFixed(3));
+                        }
+                        var myChart = echarts.init(document.getElementById('main_graph'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '相似用户系数'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data:['相似值']
+                            },
+                            xAxis: {
+                                data: similiarUser
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '相似值',
+                                type: 'bar',
+                                data: similiarVlaue
+                            }]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    } else {
+
+                    }
+                }
+            });
+    }
+
+
+
+    function showSelect(){
+        $.ajax({
+                url: '../administrator/userList',
+                method: 'post',
+                contentType: "application/x-www-form-urlencoded",
+                //阻止深度序列化，向后台传送数组
+                traditional: true,
+                success: function (msg) {
+
+                    userData=[];
+                    for (var i = 0; i < msg.length; i++) {
+                        userData.push({id:msg[i].id,text:msg[i].username});
+                    }
+
+                    $("#userIdList1,#userIdList2").select2({
+                        placeholder: "选择用户...",
+                        multiple: false,         //是否多选
+                        allowClear: false,
+                        data:userData
+                    });
+                }
+        });
+    }
 </script>
 </body>
 </html>

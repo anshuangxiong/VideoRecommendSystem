@@ -2,6 +2,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from user.models import Sysusers
 from user.models import Movies
+from recommend.models import Recommend
+from recommend.models import Xsjz
 from django.http import JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
@@ -27,7 +29,7 @@ def videoList(request):
     movies = Movies.objects.all().order_by('-isnew','movie_id')
     lists = []
     for movie in movies:
-        movie_json = {"id": movie.movie_id, 'movie_title': movie.title,'year':movie.year, 'genres': movie.genres,'isNew':movie.isnew}
+        movie_json = {"id": movie.movie_id, 'movie_title': movie.movie_name,'year':movie.show_year, 'genres': movie.genres,'isNew':movie.isnew,'picture':movie.picture,'director':movie.director,'actor':movie.leadactors,'description':movie.description,'averating':movie.averating}
         lists.append(movie_json)
     return JsonResponse(lists,  safe=False, content_type='application/json')
 
@@ -45,7 +47,6 @@ def userList(request):
 @csrf_exempt
 def removeVideo(request):
     movieId = request.POST.get('id')
-    movieId=0
     try:
         row = Movies.objects.get(movie_id=movieId).delete()
         json_data = json.dumps({'code': '0000', 'info': '删除成功', 'data': row})
@@ -62,11 +63,18 @@ def updateVideo(request):
     movieYear = request.POST.get('year')
     movieGenres = request.POST.get('genres')
     movieIsNew = request.POST.get('isnew')
+
+    movieAverating = request.POST.get('averating')
+    moviePicture = request.POST.get('picture')
+    movieDescription = request.POST.get('description')
+    movieDirector = request.POST.get('director')
+    movieLeadactors = request.POST.get('actor')
+
     if movieId == '' or movieName == '' or movieYear == '' or movieGenres=='' or movieIsNew=='':
         json_data = json.dumps({'code': '0001', 'info': '参数不能为空', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     if len(Movies.objects.filter(movie_id=int(movieId))) >0:
-        movie = Movies.objects.filter(movie_id=int(movieId)).update(title=movieName,year=movieYear,genres=movieGenres,isnew=movieIsNew)
+        movie = Movies.objects.filter(movie_id=int(movieId)).update(title=movieName,movie_name=movieName,show_year=movieYear,genres=movieGenres,isnew=movieIsNew,averating=movieAverating,director=movieDirector,description=movieDescription,leadactors=movieLeadactors,picture=moviePicture)
         json_data = json.dumps({'code': '0000', 'info': '更新成功', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     else:
@@ -96,15 +104,42 @@ def addVideo(request):
     name = request.POST.get('name')
     year = request.POST.get('year')
     genres = request.POST.get('genres')
+    movieAverating = request.POST.get('averating')
+    moviePicture = request.POST.get('picture')
+    movieDescription = request.POST.get('description')
+    movieDirector = request.POST.get('director')
+    movieLeadactors = request.POST.get('actor')
     if name == '' or year == '' or genres == '':
         json_data = json.dumps({'code': '0001', 'info': '参数不能为空', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
     else:
         max_id=Movies.objects.all().order_by('movie_id').reverse()[0].movie_id
-        Movies.objects.create(movie_id=int(max_id)+1,title=str(name),year=str(year),genres=genres,isnew=1)
+        Movies.objects.create(movie_id=int(max_id)+1,title=str(name),movie_name=name,show_year=year,genres=genres,isnew=1,averating=movieAverating,director=movieDirector,description=movieDescription,leadactors=movieLeadactors,picture=moviePicture)
         json_data = json.dumps({'code': '0000', 'info': '添加成功', 'data': ''})
         return JsonResponse(json_data, safe=False, content_type='application/json')
 
 
 
+@csrf_exempt
+def getRecommendData(request):
+    userId = request.POST.get('userId')
+    if userId == '':
+        json_data = json.dumps({'code': '0001', 'info': '参数不能为空', 'data': ''})
+        return JsonResponse(json_data, safe=False, content_type='application/json')
+    recommends=Recommend.objects.filter(user_id=userId).order_by('-recommend_score','movie_id')
+    recommends = serializers.serialize("json", recommends)
+    json_data = json.dumps({'code': '0000', 'info': '成功', 'data': recommends})
+    return JsonResponse(json_data, safe=False, content_type='application/json')
 
+
+
+@csrf_exempt
+def getSimiliarData(request):
+    userId = request.POST.get('userId')
+    if userId == '':
+        json_data = json.dumps({'code': '0001', 'info': '参数不能为空', 'data': ''})
+        return JsonResponse(json_data, safe=False, content_type='application/json')
+    xsjzs=Xsjz.objects.filter(r=userId).order_by('c')
+    xsjzs = serializers.serialize("json", xsjzs)
+    json_data = json.dumps({'code': '0000', 'info': '成功', 'data': xsjzs})
+    return JsonResponse(json_data, safe=False, content_type='application/json')

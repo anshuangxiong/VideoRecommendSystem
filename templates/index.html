@@ -80,12 +80,12 @@
                                     <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle"
                                          alt="User Image">
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        用户:&nbsp;&nbsp;{{ request.session.username }}
+                                        <small>E-mail:&nbsp;&nbsp;{{ request.session.user.fields.email }}</small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
+                                {% comment %}<li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Followers</a>
@@ -97,13 +97,13 @@
                                             <a href="#">Friends</a>
                                         </div>
                                     </div>
-                                </li>
+                                </li>{% endcomment %}
                                 <li class="user-footer">
-                                    <div class="pull-left">
+                                    {% comment %}<div class="pull-left">
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
+                                    </div>{% endcomment %}
                                     <div class="pull-right">
-                                        <a  id='logout' class="btn btn-default btn-flat">Sign out</a>
+                                        <a  id='logout' class="btn btn-default btn-flat">退出</a>
                                     </div>
                                 </li>
                             </ul>

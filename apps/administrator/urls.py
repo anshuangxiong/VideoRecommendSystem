@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^updateVideo', views.updateVideo, name='updateVideo'),
     url(r'^userState', views.userState, name='userState'),
     url(r'^addVideo', views.addVideo, name='addVideo'),
+    url(r'^getRecommendData', views.getRecommendData, name='getRecommendData'),
+    url(r'^getSimiliarData', views.getSimiliarData, name='getSimiliarData'),
 
 
 ]

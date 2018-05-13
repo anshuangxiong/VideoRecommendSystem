@@ -356,7 +356,7 @@
 <script>
 
     $(function () {
-        TableInit("../administrator/videoList");
+        //TableInit("../administrator/videoList");
 
         //新增按钮点击事件
         $("#btn_add").on("click", function () {
@@ -879,6 +879,24 @@
                                 text: '用户推荐值'
                             },
                             tooltip: {},
+                            toolbox: {
+                                feature: {
+                                    dataZoom: {
+                                        yAxisIndex: 'none'
+                                    },
+                                    restore: {},
+                                    saveAsImage: {},
+                                    dataView:{
+                                        show:true,
+                                    }
+                                },
+                                right:"50px",
+                            },
+                            dataZoom:[
+                                {
+                                    type:"slider",
+                                },
+                            ],
                             legend: {
                                 data:['推荐值']
                             },

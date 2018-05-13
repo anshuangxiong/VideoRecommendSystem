@@ -36,42 +36,6 @@
                             <img src="../static/user/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
                             <span class="hidden-xs">Administrator</span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            {% comment %}<li class="user-header">
-                                <img src="../static/user/dist/img/user2-160x160.jpg" class="img-circle"
-                                     alt="User Image">
-
-                                <p>
-                                    Administrator
-                                    <small>2018.05.20</small>
-                                </p>
-                            </li>{% endcomment %}
-                            <!-- Menu Body -->
-                           {% comment %} <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                 </div>
-                            </li>{% endcomment %}
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -91,16 +55,7 @@
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-            <!-- search form -->
-            {% comment %}<form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-                    <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>{% endcomment %}
+
             <ul class="sidebar-menu">
                 <li class="header">主菜单</li>
                 <li class="active"><a href="#" id="video_manager"><i class="fa fa-video-camera"></i> <span>视频管理</span></a></li>
@@ -139,8 +94,6 @@
                                     <label style="margin-left: 20px">选择用户</label>:&nbsp;&nbsp;<select style="width: 130px" id="userIdList2"></select>&nbsp;&nbsp;
                                     <button id="find_recom_list" type="button" class="btn btn-default btn-sm ">查询</button>
                                 </div>
-                                {% comment %}<select style="width: 150px" id="userIdList"></select>{% endcomment %}
-
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -431,7 +384,6 @@
         $("#video_user_table").bootstrapTable('destroy');
         TableInit("../administrator/userList");
         $("#main_graph").hide();
-        //$("#video_user_table").css("display","block");
     });
 
     $("#similiar_user").click(function () {
@@ -543,10 +495,7 @@
             },
             columns: [],
             onLoadSuccess: function () {
-                {% comment %}layer.msg("加载成功!", {
-                    icon: 1,
-                    time: 2000
-                });{% endcomment %}
+
             },
             onLoadError: function () {
                 //加载失败时执行
@@ -733,11 +682,7 @@
         $('#utxt_director').val(row.director);
         $('#utxt_actor').val(row.actor);
         $('#utxt_description').val(row.description);
-
-
-
         $('#updateVideoLabel').text("修改视频信息");
-
         //显示模态窗口
         $('#updateVideo').modal({
             //点击ESC键,模态窗口即会退出。
@@ -753,15 +698,11 @@
             year = $('#utxt_year').val(),
             isnew=$('#utxt_isnew').val(),
             genres = $('#utxt_genres').val(),
-
             averating = $('#utxt_averating').val(),
             picture=$('#utxt_picture').val(),
             description = $('#utxt_description').val(),
             director=$('#utxt_director').val(),
             actor = $('#utxt_actor').val();
-
-
-
         //验证数据
         if (!name) {
             layer.msg('请填写视频名称!', {icon: 2, time: 1500});
@@ -841,8 +782,6 @@
             description = $('#txt_description').val(),
             director=$('#txt_director').val(),
             actor = $('#txt_actor').val();
-
-
         //验证数据
         if (!name) {
             layer.msg('请填写视频名称!', {icon: 2, time: 1500});
@@ -852,7 +791,6 @@
             layer.msg('请填写视频年份!', {icon: 2, time: 1500});
             return false;
         }
-
         $.ajax({
             url: '../administrator/addVideo',
             method: 'post',
@@ -954,7 +892,6 @@
                                 data: recommendVlaue
                             }]
                         };
-
                         // 使用刚指定的配置项和数据显示图表。
                         myChart.setOption(option);
                     } else {

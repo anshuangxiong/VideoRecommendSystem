@@ -11,7 +11,7 @@ from VideoRecommendSystem.wsgi import scheduler
 def test_job():
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))+"  I'm a test job!")
 
-@register_job(scheduler, "interval", seconds=60, id="update_recommend_data")
+@register_job(scheduler, "interval", seconds=10, id="update_recommend_data")
 def update_recommend_data():
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + "  update_recommend_data")
     ratings = Ratings.objects.filter(isupdate=1).only('user_id').distinct()
@@ -22,7 +22,7 @@ def update_recommend_data():
             print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))+"  更新用户"+str(r.user_id)+"推荐列表")
 
 
-@register_job(scheduler, "interval", seconds=60, id="update_new_video")
+@register_job(scheduler, "interval", seconds=10, id="update_new_video")
 def update_new_video(num=10):
     '''
     新电影被num个人观看之后，取消新电影的标记符号

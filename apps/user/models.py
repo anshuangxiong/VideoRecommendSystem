@@ -56,15 +56,6 @@ class Ratings(models.Model):
         unique_together = (('user_id', 'movie_id'),)
 
 
-class Tags(models.Model):
-    user_id = models.FloatField(blank=True, null=True)
-    movie_id = models.FloatField(blank=True, null=True)
-    tag = models.CharField(max_length=255, blank=True, null=True)
-    timestamp = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'TAGS'
 
 
 class Sysusers(models.Model):

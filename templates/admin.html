@@ -854,6 +854,10 @@
 
 
   function getRecommendData(userId){
+        var oldChart = echarts.getInstanceByDom(document.getElementById('main_graph'));
+        if(oldChart!=undefined){
+            oldChart.dispose();
+        }
         $.ajax({
                 url: '../administrator/getRecommendData',
                 data: {
@@ -924,6 +928,10 @@
 
 
     function getSimiliarData(userId){
+         var oldChart = echarts.getInstanceByDom(document.getElementById('main_graph'));
+        if(oldChart!=undefined){
+            oldChart.dispose();
+        }
         $.ajax({
                 url: '../administrator/getSimiliarData',
                 data: {
@@ -951,6 +959,7 @@
                                 text: '相似用户系数'
                             },
                             tooltip: {},
+
                             legend: {
                                 data:['相似值']
                             },

@@ -7,9 +7,9 @@ from django_apscheduler.jobstores import DjangoJobStore, register_events, regist
 from VideoRecommendSystem.wsgi import scheduler
 
 
-@register_job(scheduler, "interval", seconds=5, id="test_job")
-def test_job():
-    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))+"  I'm a test job!")
+# @register_job(scheduler, "interval", seconds=5, id="test_job")
+# def test_job():
+#     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))+"  I'm a test job!")
 
 @register_job(scheduler, "interval", seconds=10, id="update_recommend_data")
 def update_recommend_data():

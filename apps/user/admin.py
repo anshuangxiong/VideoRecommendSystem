@@ -4,7 +4,6 @@ from django.contrib import admin
 from user.models import *
 admin.site.register(Movies)
 admin.site.register(Ratings)
-admin.site.register(Tags)
 admin.site.register(Links)
 admin.site.register(Sysusers)
 

@@ -21,4 +21,4 @@ scheduler = BackgroundScheduler()
 
 
 from task.views import *
-# scheduler.start()
+scheduler.start()
